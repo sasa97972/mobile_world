@@ -16,8 +16,13 @@ Route::get('/', function () {
 });
 
 
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('products/{product}', 'ProductsController@show');
+Route::resource('products', 'Site\ProductsController');
+
+Route::group(['prefix' => 'admin', 'middleware' => 'auth', 'namespace' => 'Admin'], function () {
+    Route::get('/', 'DashboardController@index')->name('admin');
+});
 
