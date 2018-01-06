@@ -12,7 +12,6 @@ if (document.getElementById('root')) {
             <Layout>
                 <DashboardMenu/>
                 <Route path="/admin/" exact component={Dashboard} />
-                <Route path="/admin/categories" component={Dashboard}/>
             </Layout>
         </Router>,
         document.getElementById('root')

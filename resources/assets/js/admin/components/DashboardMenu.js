@@ -26,6 +26,11 @@ const links = [
         id: 6,
         name: 'Пользователи',
         link: '/admin/users'
+    },
+    {
+        id: 7,
+        name: 'Заказы',
+        link: '/admin/orders'
     }
 ];
 
@@ -43,8 +48,8 @@ export default class DashboardMenu extends Component {
 
     render() {
         return (
-            <nav className="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
-                <ul className="nav nav-pills flex-column">
+            <nav className="col-sm-3 col-md-2 col-xs-12 bg-light sidebar">
+                <ul className="nav nav-pills flex-column dash__menu-list">
                     {links.map((item) => {
                         return(
                             <DashboardLink

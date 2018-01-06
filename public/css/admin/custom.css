@@ -10,7 +10,7 @@
     border-right: 1px solid #eee;
 }
 
-.sidebar .nav {
+.dash__menu-list {
     margin-bottom: 20px;
 }
 
@@ -24,4 +24,14 @@
 
 .sidebar .nav-link {
     border-radius: 0;
+}
+
+@media (max-width: 575.99px) {
+    .sidebar {
+        position: static;
+    }
+
+    .dash__menu-list {
+        margin-bottom: 0;
+    }
 }
