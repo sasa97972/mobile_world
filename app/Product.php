@@ -9,6 +9,13 @@ class Product extends Model
 {
     use Commentable;
 
+    protected $fillable = [
+      'title',
+      'description',
+      'category_id',
+      'price'
+    ];
+
     protected $mustBeApproved = false;
 
     public function category()

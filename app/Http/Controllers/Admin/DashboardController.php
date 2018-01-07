@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Product;
 use App\Order;
 use App\User;
+use App\Comment;
 
 class DashboardController extends Controller
 {
@@ -20,18 +21,21 @@ class DashboardController extends Controller
     {
         return response(
             [
-                [
-                    "name" => "Продукты",
-                    "count" => Product::all()->count()
+                "info" => [
+                    [
+                        "name" => "Продукты",
+                        "count" => Product::all()->count()
+                    ],
+                    [
+                        "name" => "Пользователи",
+                        "count" => User::all()->count()
+                    ],
+                    [
+                        "name" => "Заказы",
+                        "count" => Order::all()->count()
+                    ],
                 ],
-                [
-                    "name" => "Пользователи",
-                    "count" => User::all()->count()
-                ],
-                [
-                    "name" => "Заказы",
-                    "count" => Order::all()->count()
-                ],
+                "comments" => Comment::with(['user', 'product'])->orderBy('created_at', 'desc')->limit(5)->get()
             ]
         );
     }

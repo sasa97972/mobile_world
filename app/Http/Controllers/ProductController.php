@@ -14,9 +14,9 @@ class ProductController extends Controller
         //$product = Product::with(['comments' => function($q) {
             //$q->where('parent_id', null)->with('replies')->paginate(3);
         //}, 'category'])->find($id);
-        $count=Product::all()->count();
+        //$product=Product::find(1);
         //Auth::user()->comment($product, 'Lorem ipsum ..');
-        //Auth::user()->comment($product, 'Lorem ipsum .. 2222', 6);
+        //Auth::user()->comment($product, 'Lorem ipsum .. 2222');
         return response(["products" => 1]);
     }
 }

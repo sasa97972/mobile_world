@@ -14,6 +14,17 @@
     margin-bottom: 20px;
 }
 
+.dash__main {
+    height: calc(100vh - 54.38px);
+    margin-top: 54.38px;
+    background-color: #fff;
+    transition: background-color .2s;
+}
+
+.dash__main_load {
+    background-color: rgba(0,0,0,.3);
+}
+
 .sidebar .nav-item {
     width: 100%;
 }
@@ -24,6 +35,23 @@
 
 .sidebar .nav-link {
     border-radius: 0;
+}
+
+.loader {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader__image {
+    width: 150px;
+    height: auto;
+}
+
+.dashboard__table-actions {
+    text-align: center;
 }
 
 @media (max-width: 575.99px) {

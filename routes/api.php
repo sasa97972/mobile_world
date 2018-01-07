@@ -20,5 +20,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'admin', 'middleware' => 'api.token', 'namespace' => 'Admin'], function () {
     Route::get('/info', 'DashboardController@info')->name('admin.info');
+    Route::resource('categories', 'CategoriesController');
 });
 

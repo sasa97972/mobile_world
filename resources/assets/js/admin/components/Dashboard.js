@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Link} from 'react-router-dom';
 
 
 export default class Dashboard extends Component {
@@ -6,7 +7,8 @@ export default class Dashboard extends Component {
         super(props);
         this.state = {
             load: true,
-            info: null
+            info: null,
+            comments: null
         }
     }
 
@@ -17,7 +19,7 @@ export default class Dashboard extends Component {
             "crossDomain": true,
             "method": "GET",
             "headers": {
-                token: "verySecretToken"
+                token: this.props.token
             }
         };
 
@@ -30,7 +32,7 @@ export default class Dashboard extends Component {
                     return;
                 }
                 response.json().then(function(data) {
-                    self.setState({info: data, load: false})
+                    self.setState({info: data.info, comments: data.comments, load: false})
                 });
             })
             .catch(function (error) {
@@ -40,20 +42,64 @@ export default class Dashboard extends Component {
 
     render() {
         return (
-            <main role="main" className="col-sm-9 ml-sm-auto col-md-10 pt-3">
+            <main role="main"
+                  className= {this.state.load ?
+                      "col-sm-9 ml-sm-auto col-md-10 pt-3 dash__main dash__main_load"
+                  :
+                      "col-sm-9 ml-sm-auto col-md-10 pt-3 dash__main"}
+            >
                 {this.state.load ?
-                    <h1>Loading...</h1>
+                    <div className="loader">
+                        <img
+                            src="https://idt.taxmann.com/images/loading.gif"
+                            alt="Loading"
+                            className="loader__image"
+                        />
+                    </div>
                 :
-                    <div className="row">
-                        {this.state.info.map((item, index)=>{
-                            return(
-                                <InfoBlock
-                                    key={index}
-                                    name={item.name}
-                                    count={item.count}
-                                />
-                            );
-                        })}
+                    <div>
+                        <div className="row">
+                            {this.state.info.map((item, index)=>{
+                                return(
+                                    <InfoBlock
+                                        key={index}
+                                        name={item.name}
+                                        count={item.count}
+                                    />
+                                );
+                            })}
+                        </div>
+                        <div className="row">
+                            <div className="col-md-12">
+                                <h2>5 последних комментариев:</h2>
+                                <div className="table-responsive">
+                                    <table className="table table-striped table-bordered">
+                                        <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Имя пользователя</th>
+                                            <th>Продукт</th>
+                                            <th>Комментарий</th>
+                                            <th className="dashboard__table-actions">Действие</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {this.state.comments.map((comment, index)=>{
+                                            return(
+                                                <CommentBlock
+                                                    key={index}
+                                                    id={comment.id}
+                                                    user={comment.user}
+                                                    product={comment.product}
+                                                    comment={comment.comment}
+                                                />
+                                            )
+                                        })}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 }
             </main>
@@ -66,9 +112,34 @@ const InfoBlock = (props) => {
     return(
         <div className="col-md-4">
             <div className="jumbotron">
-                <h1 className="display-4">{name}</h1>
-                <p className="lead">Количество: <span className="text-success">{count}</span></p>
+                <h1 className="display-5">{name}</h1>
+                <p className="lead">Количество: <span className="badge badge-primary">{count}</span></p>
             </div>
         </div>
     )
+};
+
+const CommentBlock = (props) => {
+    const {user, comment, product, id} = props;
+    return(
+        <tr>
+            <td>{id}</td>
+            <td>{user.name}</td>
+            <td>{product.title}</td>
+            <td>{comment}</td>
+            <td className="dashboard__table-actions">
+                <div className="btn-group" role="group">
+                    <Link
+                        type="button"
+                        role="button"
+                        className="btn btn-secondary"
+                        to={`/admin/comments/edit/${id}`}
+                    >
+                        Редактировать
+                    </Link>
+                    <button type="button" className="btn btn-secondary">Удалить</button>
+                </div>
+            </td>
+        </tr>
+    );
 };
