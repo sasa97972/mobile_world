@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Api;
 
 use App\Category;
 use Illuminate\Http\Request;
@@ -11,11 +11,18 @@ class CategoriesController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-
+        $perPage = $request->get('perPage');
+        $sortBy = $request->get('sortBy');
+        $sort = $request->get('sort');
+        return response([
+            "data" => Category::orderBy($sortBy, $sort)->paginate($perPage),
+            "url" => url("api/admin/categories")
+        ]);
     }
 
     /**

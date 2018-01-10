@@ -13,7 +13,7 @@ export default class Dashboard extends Component {
     }
 
     componentDidMount() {
-        const url = "http://localhost/api/admin/info";
+        const url = "/api/admin";
         let settings = {
             "async": true,
             "crossDomain": true,

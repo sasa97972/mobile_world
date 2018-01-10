@@ -1,18 +1,31 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import Pagination from './Pagination';
 
 export default class Categories extends Component
 {
     constructor(props) {
         super(props);
         this.state = {
+            url: "/api/admin/categories",
+            perPage: 10,
             load: true,
-            categories: null
-        }
+            categories: null,
+            pagination: null,
+            search: "",
+            isSearch: false,
+            button: false,
+            sortBy: "created_at",
+            sort: "asc"
+        };
+        this.getData = this.getData.bind(this);
     }
 
     componentDidMount() {
-        const url = "http://localhost/api/admin/categories";
+        this.getData();
+    }
+
+    getData() {
         let settings = {
             "async": true,
             "crossDomain": true,
@@ -23,6 +36,10 @@ export default class Categories extends Component
         };
 
         const self = this;
+        const url = this.state.url.search(/\?/igm) !== -1 ?
+            `${this.state.url}&perPage=${this.state.perPage}&sortBy=${this.state.sortBy}&sort=${this.state.sort}`
+            : `
+            ${this.state.url}?perPage=${this.state.perPage}&sortBy=${this.state.sortBy}&sort=${this.state.sort}`;
         fetch(url, settings)
             .then(response => {
                 if (response.status !== 200) {
@@ -31,13 +48,68 @@ export default class Categories extends Component
                     return;
                 }
                 response.json().then(function(data) {
-                    console.log(data);
-                    self.setState({categories: data, load: false})
+                    self.setState({
+                        categories: data.data.data,
+                        load: false,
+                        pagination: {
+                            next_page: data.data.next_page_url,
+                            prev_page: data.data.prev_page_url,
+                            current_page: data.data.current_page,
+                            last_page: data.data.last_page,
+                            last_page_url: data.data.last_page_url,
+                            url: data.url
+                        }
+                    })
                 });
             })
             .catch(function (error) {
                 console.log('Request failed', error);
             });
+    }
+
+    handlePagination(event) {
+        event.preventDefault();
+        event.target.blur();
+        this.setState({url: event.target.href}, () => {
+            this.getData();
+        });
+    }
+
+    handleInput(event) {
+        if(event.target.value) {
+            this.setState({button: true})
+        } else {
+            this.setState({button: false})
+        }
+        this.setState({search: event.target.value});
+    }
+
+    handleSearch() {
+        if(!this.state.button) {
+            return;
+        }
+        this.setState({url: `/api/categories/search/${this.state.search}`, isSearch: true}, () => {
+            this.getData();
+        });
+    }
+
+    handleChangePerPage(event) {
+        this.setState({perPage: event.target.options[event.target.selectedIndex].value}, () => {
+            this.getData();
+        });
+    }
+
+    handleChangeSort(event) {
+        this.setState({sort: event.target.options[event.target.selectedIndex].value}, () => {
+            this.getData();
+        });
+    }
+
+    handleSearchBack() {
+        this.getData();
+        this.setState({search: "", isSearch: false, button: false, url: "/api/admin/categories"}, () => {
+            this.getData();
+        });
     }
 
     render() {
@@ -59,12 +131,81 @@ export default class Categories extends Component
                     :
                     <div>
                         <div className="row">
-                            <div className="col-md-12">
+                            <div className="col-md-8">
                                 <h1 className="display-4">Категории</h1>
+                            </div>
+                            <div className="col-md-4 align-self-center">
+                                <Link to="/admin/categories/create" type="button" className="btn btn-success btn-block" role="button">
+                                    Добавить категорию
+                                </Link>
+                            </div>
+                            <div className="col-md-12">
+                                <div className="form-group">
+                                    <div className="input-group mb-3">
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            placeholder="Поиск категорий"
+                                            aria-label="Поиск категорий"
+                                            onChange={(e) => {this.handleInput(e)}}
+                                            value={this.state.search}
+                                        />
+                                        <div className="input-group-append">
+                                            {this.state.isSearch &&
+                                                <button
+                                                    className="btn btn-warning"
+                                                    type="button"
+                                                    onClick={() => {this.handleSearchBack()}}
+                                                >
+                                                    Вернутся ко всем категориям
+                                                </button>
+                                            }
+                                            <button
+                                                className={this.state.button ?
+                                                    "btn btn-primary"
+                                                    :
+                                                    "btn btn-primary disabled"
+                                                }
+
+                                                type="button"
+                                                onClick={() => {this.handleSearch()}}
+                                            >
+                                                Поиск
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="col-md-12">
+                                <div className="form-group row">
+                                    <label className="col-md-2 col-form-label">Количество категорий на странице:</label>
+                                    <div className="col-md-4">
+                                        <select
+                                            id="perPage"
+                                            className="custom-select custom-select-md"
+                                            onChange={(e) => {this.handleChangePerPage(e)}}
+                                        >
+                                            <option value="10">10</option>
+                                            <option value="20">20</option>
+                                            <option value="30">30</option>
+                                        </select>
+                                    </div>
+                                    <label className="col-md-2 col-form-label">Показывать сначала:</label>
+                                    <div className="col-md-4">
+                                        <select
+                                            id="sort"
+                                            className="custom-select custom-select-md"
+                                            onChange={(e) => {this.handleChangeSort(e)}}
+                                        >
+                                            <option value="asc">Самые старые</option>
+                                            <option value="desc">Самые новые</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                             <div className="col-md-12">
                                 <div className="table-responsive">
-                                    <table className="table table-striped table-dark table-bordered">
+                                    <table className="table table-striped table-bordered">
                                         <thead>
                                         <tr>
                                             <th scope="col">#</th>
@@ -76,11 +217,20 @@ export default class Categories extends Component
                                         <tbody>
                                             {this.state.categories.map((category) => (
                                                 <CategoryBlock
-
+                                                    key={category.id}
+                                                    id={category.id}
+                                                    description={category.description}
+                                                    name={category.name}
                                                 />
                                             ))}
                                         </tbody>
                                     </table>
+                                </div>
+                                <div className="col-md-12">
+                                    <Pagination
+                                        pagination={this.state.pagination}
+                                        handleClick={(e) => {this.handlePagination(e)}}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -95,10 +245,24 @@ const CategoryBlock = (props) => {
     const {id, name, description} = props;
     return(
         <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
+            <th scope="row">{id}</th>
+            <td>{name}</td>
+            <td>{description}</td>
+            <td className="dashboard__table-actions">
+                <div className="btn-group" role="group">
+                    <Link
+                        type="button"
+                        role="button"
+                        className="btn btn-secondary"
+                        to={`/admin/categories/edit/${id}`}
+                    >
+                        Редактировать
+                    </Link>
+                    <button type="button" className="btn btn-secondary btn-danger">Удалить</button>
+                </div>
+            </td>
         </tr>
     );
 };
+
+

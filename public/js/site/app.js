@@ -12230,7 +12230,7 @@ var isExtraneousPopstateEvent = function isExtraneousPopstateEvent(event) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(112);
-module.exports = __webpack_require__(271);
+module.exports = __webpack_require__(272);
 
 
 /***/ }),
@@ -57561,8 +57561,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_Dashboard__ = __webpack_require__(267);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_DashboardMenu__ = __webpack_require__(268);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_Categories__ = __webpack_require__(269);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_BasicLayout__ = __webpack_require__(270);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_CreateCategory__ = __webpack_require__(277);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_BasicLayout__ = __webpack_require__(271);
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 
 
 
@@ -57580,7 +57582,7 @@ if (document.getElementById('root')) {
         __WEBPACK_IMPORTED_MODULE_2_react_router_dom__["a" /* BrowserRouter */],
         null,
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-            __WEBPACK_IMPORTED_MODULE_6__components_BasicLayout__["a" /* Layout */],
+            __WEBPACK_IMPORTED_MODULE_7__components_BasicLayout__["a" /* Layout */],
             null,
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_4__components_DashboardMenu__["a" /* default */], null),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/admin/', exact: true, render: function render(props) {
@@ -57588,6 +57590,9 @@ if (document.getElementById('root')) {
                 } }),
             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/admin/categories', exact: true, render: function render(props) {
                     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_5__components_Categories__["a" /* default */], _extends({}, props, { token: token }));
+                } }),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_react_router_dom__["c" /* Route */], { path: '/admin/categories/create', render: function render(props) {
+                    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__components_CreateCategory__["a" /* default */], _extends({}, props, { token: token }));
                 } })
         )
     ), document.getElementById('root'));
@@ -72540,7 +72545,7 @@ var Dashboard = function (_Component) {
     _createClass(Dashboard, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var url = "http://localhost/api/admin/info";
+            var url = "/api/admin";
             var settings = {
                 "async": true,
                 "crossDomain": true,
@@ -72880,6 +72885,7 @@ var DashboardLink = function DashboardLink(props) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Pagination__ = __webpack_require__(270);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -72887,6 +72893,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 
 
 
@@ -72900,16 +72907,29 @@ var Categories = function (_Component) {
         var _this = _possibleConstructorReturn(this, (Categories.__proto__ || Object.getPrototypeOf(Categories)).call(this, props));
 
         _this.state = {
+            url: "/api/admin/categories",
+            perPage: 10,
             load: true,
-            categories: null
+            categories: null,
+            pagination: null,
+            search: "",
+            isSearch: false,
+            button: false,
+            sortBy: "created_at",
+            sort: "asc"
         };
+        _this.getData = _this.getData.bind(_this);
         return _this;
     }
 
     _createClass(Categories, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
-            var url = "http://localhost/api/admin/categories";
+            this.getData();
+        }
+    }, {
+        key: 'getData',
+        value: function getData() {
             var settings = {
                 "async": true,
                 "crossDomain": true,
@@ -72920,22 +72940,96 @@ var Categories = function (_Component) {
             };
 
             var self = this;
+            var url = this.state.url.search(/\?/igm) !== -1 ? this.state.url + '&perPage=' + this.state.perPage + '&sortBy=' + this.state.sortBy + '&sort=' + this.state.sort : '\n            ' + this.state.url + '?perPage=' + this.state.perPage + '&sortBy=' + this.state.sortBy + '&sort=' + this.state.sort;
             fetch(url, settings).then(function (response) {
                 if (response.status !== 200) {
                     console.log('Looks like there was a problem. Status Code: ' + response.status);
                     return;
                 }
                 response.json().then(function (data) {
-                    console.log(data);
-                    self.setState({ categories: data, load: false });
+                    self.setState({
+                        categories: data.data.data,
+                        load: false,
+                        pagination: {
+                            next_page: data.data.next_page_url,
+                            prev_page: data.data.prev_page_url,
+                            current_page: data.data.current_page,
+                            last_page: data.data.last_page,
+                            last_page_url: data.data.last_page_url,
+                            url: data.url
+                        }
+                    });
                 });
             }).catch(function (error) {
                 console.log('Request failed', error);
             });
         }
     }, {
+        key: 'handlePagination',
+        value: function handlePagination(event) {
+            var _this2 = this;
+
+            event.preventDefault();
+            event.target.blur();
+            this.setState({ url: event.target.href }, function () {
+                _this2.getData();
+            });
+        }
+    }, {
+        key: 'handleInput',
+        value: function handleInput(event) {
+            if (event.target.value) {
+                this.setState({ button: true });
+            } else {
+                this.setState({ button: false });
+            }
+            this.setState({ search: event.target.value });
+        }
+    }, {
+        key: 'handleSearch',
+        value: function handleSearch() {
+            var _this3 = this;
+
+            if (!this.state.button) {
+                return;
+            }
+            this.setState({ url: '/api/categories/search/' + this.state.search, isSearch: true }, function () {
+                _this3.getData();
+            });
+        }
+    }, {
+        key: 'handleChangePerPage',
+        value: function handleChangePerPage(event) {
+            var _this4 = this;
+
+            this.setState({ perPage: event.target.options[event.target.selectedIndex].value }, function () {
+                _this4.getData();
+            });
+        }
+    }, {
+        key: 'handleChangeSort',
+        value: function handleChangeSort(event) {
+            var _this5 = this;
+
+            this.setState({ sort: event.target.options[event.target.selectedIndex].value }, function () {
+                _this5.getData();
+            });
+        }
+    }, {
+        key: 'handleSearchBack',
+        value: function handleSearchBack() {
+            var _this6 = this;
+
+            this.getData();
+            this.setState({ search: "", isSearch: false, button: false, url: "/api/admin/categories" }, function () {
+                _this6.getData();
+            });
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var _this7 = this;
+
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'main',
                 { role: 'main',
@@ -72957,11 +73051,140 @@ var Categories = function (_Component) {
                         { className: 'row' },
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                             'div',
-                            { className: 'col-md-12' },
+                            { className: 'col-md-8' },
                             __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                 'h1',
                                 { className: 'display-4' },
                                 '\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438'
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'col-md-4 align-self-center' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                __WEBPACK_IMPORTED_MODULE_1_react_router_dom__["b" /* Link */],
+                                { to: '/admin/categories/create', type: 'button', className: 'btn btn-success btn-block', role: 'button' },
+                                '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044E'
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'col-md-12' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'form-group' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'input-group mb-3' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('input', {
+                                        type: 'text',
+                                        className: 'form-control',
+                                        placeholder: '\u041F\u043E\u0438\u0441\u043A \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0439',
+                                        'aria-label': '\u041F\u043E\u0438\u0441\u043A \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0439',
+                                        onChange: function onChange(e) {
+                                            _this7.handleInput(e);
+                                        },
+                                        value: this.state.search
+                                    }),
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'div',
+                                        { className: 'input-group-append' },
+                                        this.state.isSearch && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'button',
+                                            {
+                                                className: 'btn btn-warning',
+                                                type: 'button',
+                                                onClick: function onClick() {
+                                                    _this7.handleSearchBack();
+                                                }
+                                            },
+                                            '\u0412\u0435\u0440\u043D\u0443\u0442\u0441\u044F \u043A\u043E \u0432\u0441\u0435\u043C \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044F\u043C'
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'button',
+                                            {
+                                                className: this.state.button ? "btn btn-primary" : "btn btn-primary disabled",
+
+                                                type: 'button',
+                                                onClick: function onClick() {
+                                                    _this7.handleSearch();
+                                                }
+                                            },
+                                            '\u041F\u043E\u0438\u0441\u043A'
+                                        )
+                                    )
+                                )
+                            )
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'div',
+                            { className: 'col-md-12' },
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'form-group row' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'label',
+                                    { className: 'col-md-2 col-form-label' },
+                                    '\u041A\u043E\u043B\u0438\u0447\u0435\u0441\u0442\u0432\u043E \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0439 \u043D\u0430 \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0435:'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'col-md-4' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'select',
+                                        {
+                                            id: 'perPage',
+                                            className: 'custom-select custom-select-md',
+                                            onChange: function onChange(e) {
+                                                _this7.handleChangePerPage(e);
+                                            }
+                                        },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'option',
+                                            { value: '10' },
+                                            '10'
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'option',
+                                            { value: '20' },
+                                            '20'
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'option',
+                                            { value: '30' },
+                                            '30'
+                                        )
+                                    )
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'label',
+                                    { className: 'col-md-2 col-form-label' },
+                                    '\u041F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u0441\u043D\u0430\u0447\u0430\u043B\u0430:'
+                                ),
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                    'div',
+                                    { className: 'col-md-4' },
+                                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                        'select',
+                                        {
+                                            id: 'sort',
+                                            className: 'custom-select custom-select-md',
+                                            onChange: function onChange(e) {
+                                                _this7.handleChangeSort(e);
+                                            }
+                                        },
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'option',
+                                            { value: 'asc' },
+                                            '\u0421\u0430\u043C\u044B\u0435 \u0441\u0442\u0430\u0440\u044B\u0435'
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'option',
+                                            { value: 'desc' },
+                                            '\u0421\u0430\u043C\u044B\u0435 \u043D\u043E\u0432\u044B\u0435'
+                                        )
+                                    )
+                                )
                             )
                         ),
                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
@@ -72972,7 +73195,7 @@ var Categories = function (_Component) {
                                 { className: 'table-responsive' },
                                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                     'table',
-                                    { className: 'table table-striped table-dark table-bordered' },
+                                    { className: 'table table-striped table-bordered' },
                                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                         'thead',
                                         null,
@@ -73005,10 +73228,25 @@ var Categories = function (_Component) {
                                         'tbody',
                                         null,
                                         this.state.categories.map(function (category) {
-                                            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(CategoryBlock, null);
+                                            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(CategoryBlock, {
+                                                key: category.id,
+                                                id: category.id,
+                                                description: category.description,
+                                                name: category.name
+                                            });
                                         })
                                     )
                                 )
+                            ),
+                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                'div',
+                                { className: 'col-md-12' },
+                                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Pagination__["a" /* default */], {
+                                    pagination: this.state.pagination,
+                                    handleClick: function handleClick(e) {
+                                        _this7.handlePagination(e);
+                                    }
+                                })
                             )
                         )
                     )
@@ -73034,28 +73272,189 @@ var CategoryBlock = function CategoryBlock(props) {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'th',
             { scope: 'row' },
-            '1'
+            id
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'td',
             null,
-            'Mark'
+            name
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'td',
             null,
-            'Otto'
+            description
         ),
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'td',
-            null,
-            '@mdo'
+            { className: 'dashboard__table-actions' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'btn-group', role: 'group' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    __WEBPACK_IMPORTED_MODULE_1_react_router_dom__["b" /* Link */],
+                    {
+                        type: 'button',
+                        role: 'button',
+                        className: 'btn btn-secondary',
+                        to: '/admin/categories/edit/' + id
+                    },
+                    '\u0420\u0435\u0434\u0430\u043A\u0442\u0438\u0440\u043E\u0432\u0430\u0442\u044C'
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'button',
+                    { type: 'button', className: 'btn btn-secondary btn-danger' },
+                    '\u0423\u0434\u0430\u043B\u0438\u0442\u044C'
+                )
+            )
         )
     );
 };
 
 /***/ }),
 /* 270 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = Pagination;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+function Pagination(props) {
+    var pagination = props.pagination,
+        handleClick = props.handleClick;
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        "nav",
+        { "aria-label": "Page navigation example" },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            "ul",
+            { className: "pagination justify-content-center" },
+            pagination.last_page > 1 && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "li",
+                {
+                    className: pagination.current_page === 1 ? "page-item disabled" : "page-item"
+                },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "a",
+                    {
+                        className: "page-link",
+                        href: pagination.url + "?page=1",
+                        "aria-label": "\u041F\u0435\u0440\u0432\u0430\u044F \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430",
+                        onClick: handleClick
+                    },
+                    "\u041F\u0435\u0440\u0432\u0430\u044F \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430",
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "span",
+                        { className: "sr-only" },
+                        "\u041F\u0435\u0440\u0432\u0430\u044F \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430"
+                    )
+                )
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "li",
+                {
+                    className: pagination.prev_page === null ? "page-item disabled" : "page-item"
+                },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "a",
+                    {
+                        className: "page-link",
+                        href: pagination.prev_page,
+                        "aria-label": "Previous",
+                        onClick: handleClick
+                    },
+                    "\xAB",
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "span",
+                        { className: "sr-only" },
+                        "\u041F\u0440\u0435\u0434\u044B\u0434\u0443\u0449\u0430\u044F"
+                    )
+                )
+            ),
+            pagination.current_page - 1 > 0 && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "li",
+                { className: "page-item" },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "a",
+                    {
+                        className: "page-link",
+                        href: pagination.url + "?page=" + (pagination.current_page - 1),
+                        onClick: handleClick
+                    },
+                    pagination.current_page - 1
+                )
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "li",
+                { className: "page-item disabled" },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "a",
+                    { className: "page-link", href: "#" },
+                    pagination.current_page
+                )
+            ),
+            pagination.current_page + 1 <= pagination.last_page && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "li",
+                { className: "page-item" },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "a",
+                    {
+                        className: "page-link",
+                        href: pagination.url + "?page=" + (pagination.current_page + 1),
+                        onClick: handleClick
+                    },
+                    pagination.current_page + 1
+                )
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "li",
+                {
+                    className: pagination.next_page === null ? "page-item disabled" : "page-item"
+                },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "a",
+                    {
+                        className: "page-link",
+                        href: pagination.next_page,
+                        "aria-label": "Next",
+                        onClick: handleClick
+                    },
+                    "\xBB",
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "span",
+                        { className: "sr-only" },
+                        "\u0421\u043B\u0435\u0434\u0443\u044E\u0449\u0430\u044F"
+                    )
+                )
+            ),
+            pagination.last_page > 1 && __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                "li",
+                {
+                    className: pagination.current_page === pagination.last_page ? "page-item disabled" : "page-item"
+                },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    "a",
+                    {
+                        className: "page-link",
+                        href: pagination.last_page_url,
+                        "aria-label": "\u041F\u043E\u0441\u043B\u0435\u0434\u043D\u044F\u044F \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430",
+                        onClick: handleClick
+                    },
+                    "\u041F\u043E\u0441\u043B\u0435\u0434\u043D\u044F\u044F \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430",
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        "span",
+                        { className: "sr-only" },
+                        "\u041F\u043E\u0441\u043B\u0435\u0434\u043D\u044F\u044F \u0441\u0442\u0440\u0430\u043D\u0438\u0446\u0430"
+                    )
+                )
+            )
+        )
+    );
+};
+
+/***/ }),
+/* 271 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -73077,10 +73476,82 @@ var Layout = function Layout(props) {
 };
 
 /***/ }),
-/* 271 */
+/* 272 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 273 */,
+/* 274 */,
+/* 275 */,
+/* 276 */,
+/* 277 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_react_router_dom__ = __webpack_require__(39);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+var CreateCategory = function (_Component) {
+    _inherits(CreateCategory, _Component);
+
+    function CreateCategory(props) {
+        _classCallCheck(this, CreateCategory);
+
+        var _this = _possibleConstructorReturn(this, (CreateCategory.__proto__ || Object.getPrototypeOf(CreateCategory)).call(this, props));
+
+        _this.state = {};
+        return _this;
+    }
+
+    _createClass(CreateCategory, [{
+        key: 'render',
+        value: function render() {
+            return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'main',
+                { role: 'main', className: 'col-sm-9 ml-sm-auto col-md-10 pt-3 dash__main' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'div',
+                    { className: 'row' },
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'col-md-8' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'h1',
+                            { className: 'display-4' },
+                            '\u0414\u043E\u0431\u0430\u0432\u0438\u0442\u044C \u043D\u043E\u0432\u0443\u044E \u043A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u044E'
+                        )
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'div',
+                        { className: 'col-md-4 align-self-center' },
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            __WEBPACK_IMPORTED_MODULE_1_react_router_dom__["b" /* Link */],
+                            { to: '/admin/categories', type: 'button', className: 'btn btn-warning btn-block', role: 'button' },
+                            '\u0412\u0435\u0440\u043D\u0443\u0442\u044C\u0441\u044F \u043D\u0430\u0437\u0430\u0434'
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return CreateCategory;
+}(__WEBPACK_IMPORTED_MODULE_0_react__["Component"]);
+
+/* harmony default export */ __webpack_exports__["a"] = (CreateCategory);
 
 /***/ })
 /******/ ]);
