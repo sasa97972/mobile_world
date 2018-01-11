@@ -179,7 +179,7 @@ export default class Categories extends Component
                             <div className="col-md-12">
                                 <div className="form-group row">
                                     <label className="col-md-2 col-form-label">Количество категорий на странице:</label>
-                                    <div className="col-md-4">
+                                    <div className="col-md-4 align-self-center">
                                         <select
                                             id="perPage"
                                             className="custom-select custom-select-md"
@@ -190,8 +190,8 @@ export default class Categories extends Component
                                             <option value="30">30</option>
                                         </select>
                                     </div>
-                                    <label className="col-md-2 col-form-label">Показывать сначала:</label>
-                                    <div className="col-md-4">
+                                    <label className="col-md-2 align-self-center col-form-label">Показывать сначала:</label>
+                                    <div className="col-md-4 align-self-center">
                                         <select
                                             id="sort"
                                             className="custom-select custom-select-md"

@@ -23,6 +23,9 @@ export default class CreateCategory extends Component
                         </Link>
                     </div>
                 </div>
+                <div className="row">
+
+                </div>
             </main>
         );
     }

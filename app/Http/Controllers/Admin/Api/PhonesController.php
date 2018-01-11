@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Admin\Api;
 
-use App\Category;
+use App\Phone;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class CategoriesController extends Controller
+class PhonesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-
+        //
     }
 
     /**
@@ -42,10 +42,10 @@ class CategoriesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Category  $category
+     * @param  \App\Phone  $phone
      * @return \Illuminate\Http\Response
      */
-    public function show(Category $category)
+    public function show(Phone $phone)
     {
         //
     }
@@ -53,10 +53,10 @@ class CategoriesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Category  $category
+     * @param  \App\Phone  $phone
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit(Phone $phone)
     {
         //
     }
@@ -65,10 +65,10 @@ class CategoriesController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Category  $category
+     * @param  \App\Phone  $phone
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Phone $phone)
     {
         //
     }
@@ -76,10 +76,10 @@ class CategoriesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Category  $category
+     * @param  \App\Phone  $phone
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy(Phone $phone)
     {
         //
     }
