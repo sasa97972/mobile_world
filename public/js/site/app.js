@@ -66869,9 +66869,8 @@ var Products = function (_Component) {
             search: "",
             isSearch: false,
             button: false,
-            sortBy: "created_at",
-            sort: "asc",
-            with: null
+            sortBy: "id",
+            sort: "asc"
         };
         _this.getData = _this.getData.bind(_this);
         return _this;
@@ -66903,7 +66902,6 @@ var Products = function (_Component) {
 
             axios(settings).then(function (response) {
                 var data = response.data;
-                console.log(data);
                 self.setState({
                     products: data.data,
                     load: false,
@@ -66997,18 +66995,9 @@ var Products = function (_Component) {
         value: function handleChangeSortBy(event) {
             var _this6 = this;
 
-            var value = event.target.options[event.target.selectedIndex].value;
-            if (value.search(/with_/igm) !== -1) {
-                var parts = value.split('_');
-                console.log({ with: parts[1], sortBy: parts[2] });
-                this.setState({ with: parts[1], sortBy: parts[2] }, function () {
-                    _this6.getData();
-                });
-            } else {
-                this.setState({ with: null, sortBy: value }, function () {
-                    _this6.getData();
-                });
-            }
+            this.setState({ sortBy: event.target.options[event.target.selectedIndex].value }, function () {
+                _this6.getData();
+            });
         }
     }, {
         key: 'handleSearchBack',
@@ -67169,6 +67158,11 @@ var Products = function (_Component) {
                                         },
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             'option',
+                                            { value: 'id' },
+                                            'Id'
+                                        ),
+                                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                                            'option',
                                             { value: 'created_at' },
                                             '\u0414\u0430\u0442\u0435 \u0441\u043E\u0437\u0434\u0430\u043D\u0438\u044F'
                                         ),
@@ -67179,12 +67173,12 @@ var Products = function (_Component) {
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             'option',
-                                            { value: 'with_category_name' },
+                                            { value: 'categories.name' },
                                             '\u041A\u0430\u0442\u0435\u0433\u043E\u0440\u0438\u0438'
                                         ),
                                         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                                             'option',
-                                            { value: 'with_phones_model' },
+                                            { value: 'phones.model' },
                                             '\u041C\u043E\u0434\u0435\u043B\u0438 \u0442\u0435\u043B\u0435\u0444\u043E\u043D\u0430'
                                         )
                                     )

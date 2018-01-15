@@ -3,11 +3,19 @@
 namespace App\Http\Controllers\Admin\Api;
 
 use App\Product;
+use App\Repositories\ProductRepositories;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ProductsController extends Controller
 {
+    protected $products;
+
+    public function __construct(ProductRepositories $product)
+    {
+        $this->products = $product;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,22 +28,7 @@ class ProductsController extends Controller
         $sortBy = $request->get('sortBy');
         $sort = $request->get('sort');
 
-        if($request->get('with') === 'category') {
-            return response( Product::with('category', 'phones')
-                ->join('categories', 'products.category_id', '=', 'categories.id')
-                ->select('products.*', 'categories.name')
-                ->orderBy('categories.'.$sortBy, $sort)
-                ->paginate($perPage));
-        } elseif ($request->get('with') === 'phones') {
-            return response( Product::with('category', 'phones')
-                ->join('products_phones', 'products.id', '=', 'products_phones.product_id')
-                ->join('phones', 'products_phones.phone_id', '=', 'phones.id')
-                ->select('products.*', 'phones.model')
-                ->orderBy('phones.'.$sortBy, $sort)
-                ->paginate($perPage));
-        }
-
-        return response( Product::with('category', 'phones')->orderBy($sortBy, $sort)->paginate($perPage));
+        return response($this->products->getWithSort($perPage, $sortBy, $sort));
     }
 
     /**

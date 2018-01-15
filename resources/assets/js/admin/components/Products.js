@@ -15,9 +15,8 @@ export default class Products extends Component
             search: "",
             isSearch: false,
             button: false,
-            sortBy: "created_at",
-            sort: "asc",
-            with: null
+            sortBy: "id",
+            sort: "asc"
         };
         this.getData = this.getData.bind(this);
     }
@@ -124,17 +123,9 @@ export default class Products extends Component
     }
 
     handleChangeSortBy(event) {
-        const value = event.target.options[event.target.selectedIndex].value;
-        if(value.search(/with_/igm) !== -1) {
-            const parts = value.split('_');
-            this.setState({with: parts[1],sortBy: parts[2]}, () => {
-                this.getData();
-            });
-        } else {
-            this.setState({with: null , sortBy: value}, () => {
-                this.getData();
-            });
-        }
+        this.setState({sortBy: event.target.options[event.target.selectedIndex].value}, () => {
+            this.getData();
+        });
     }
 
     handleSearchBack() {
@@ -232,10 +223,11 @@ export default class Products extends Component
                                             className="custom-select custom-select-md"
                                             onChange={(e) => {this.handleChangeSortBy(e)}}
                                         >
+                                            <option value="id">Id</option>
                                             <option value="created_at">Дате создания</option>
                                             <option value="title">Названию</option>
-                                            <option value="with_category_name">Категории</option>
-                                            <option value="with_phones_model">Модели телефона</option>
+                                            <option value="categories.name">Категории</option>
+                                            <option value="phones.model">Модели телефона</option>
                                         </select>
                                     </div>
 
