@@ -11,12 +11,15 @@ class ProductController extends Controller
 {
     public function show($id)
     {
-        //$product = Product::with(['comments' => function($q) {
-            //$q->where('parent_id', null)->with('replies')->paginate(3);
-        //}, 'category'])->find($id);
+        //$product = Product::with('category', 'phones')->find($id);
+        //$comments = $product->comments();
+
+        $product = Product::with('category')->references('category')->get();
+
+        //$comments = Comment::get()->toTree();
         //$product=Product::find(1);
         //Auth::user()->comment($product, 'Lorem ipsum ..');
-        //Auth::user()->comment($product, 'Lorem ipsum .. 2222');
-        return response(["products" => 1]);
+        //Auth::user()->comment($product, 'Lorem ipsum .. 2222', 4);
+        return response($product);
     }
 }

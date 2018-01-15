@@ -25,6 +25,6 @@ class Product extends Model
 
     public function phones()
     {
-        return $this->belongsToMany('App\Phone');
+        return $this->belongsToMany('App\Phone', 'products_phones');
     }
 }

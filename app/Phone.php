@@ -8,11 +8,11 @@ class Phone extends Model
 {
     protected $fillable = [
         "name",
-        "title"
+        "model"
     ];
 
     public function products()
     {
-        return $this->belongsToMany('App\Product');
+        return $this->belongsToMany('App\Product', 'products_phones');
     }
 }

@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Site\Api;
 
-use App\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Phone;
 
-class CategoriesController extends Controller
+class PhonesController extends Controller
 {
-
     /**
      * @param Request $request
      * @param string $word
@@ -19,7 +18,6 @@ class CategoriesController extends Controller
         $perPage = $request->get('perPage');
         $sortBy = $request->get('sortBy');
         $sort = $request->get('sort');
-        return(response(Category::where('name', 'like', "%$word%")->orderBy($sortBy, $sort)->paginate($perPage)));
+        return(response(Phone::where('name', 'like', "%$word%")->orWhere('model', 'like', "%$word%")->orderBy($sortBy, $sort)->paginate($perPage)));
     }
-
 }

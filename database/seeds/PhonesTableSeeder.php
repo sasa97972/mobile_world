@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Category;
+use App\Phone;
 
-class CategoriesTableSeeder extends Seeder
+class PhonesTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,9 +15,9 @@ class CategoriesTableSeeder extends Seeder
         $faker = \Faker\Factory::create();
 
         for ($i = 0; $i < 15; $i++) {
-            Category::create([
-                'name' => $faker->title,
-                'description' => $faker->paragraph,
+            Phone::create([
+                'name' => $faker->word,
+                'model' => $faker->word,
             ]);
         }
     }

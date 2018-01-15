@@ -15,12 +15,16 @@ class ProductsTableSeeder extends Seeder
         $faker = \Faker\Factory::create();
 
         for ($i = 0; $i < 25; $i++) {
-            Product::create([
-                'title' => $faker->title,
-                'description' => $faker->paragraph,
-                'price' => $faker->randomNumber(2),
-                'category_id' => mt_rand(1,5)
-            ]);
+            $product = new Product;
+            $product->title = $faker->word;
+            $product->description = $faker->paragraph;
+            $product->price = $faker->randomNumber(3);
+            $product->category_id = mt_rand(1,5);
+            $product->title_image = $faker->word;
+
+            $product->save();
+
+            $product->phones()->attach(mt_rand(1,15));
         }
     }
 }

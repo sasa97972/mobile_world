@@ -3,6 +3,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Kalnoy\Nestedset\NestedSet;
 
 class CreateCommentsTable extends Migration
 {
@@ -10,6 +11,7 @@ class CreateCommentsTable extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
+            NestedSet::columns($table);
             $table->string('commentable_id')->nullable();
             $table->string('commentable_type')->nullable();
             $table->index(['commentable_id', 'commentable_type']);
@@ -19,7 +21,6 @@ class CreateCommentsTable extends Migration
             $table->longText('comment');
             $table->boolean('approved')->default(true);
             $table->double('rate', 15, 8)->nullable();
-            $table->integer('parent_id')->unsigned()->index()->nullable();
             $table->timestamps();
         });
     }

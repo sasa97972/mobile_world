@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\Commentable;
+use Kalnoy\Nestedset\NodeTrait;
 
 /**
  * @property bool approved
@@ -11,6 +12,7 @@ use App\Traits\Commentable;
 class Comment extends Model
 {
     use Commentable;
+    use NodeTrait;
 
     protected $mustBeApproved = false;
 

@@ -20,9 +20,9 @@ class CreateProductsTable extends Migration
             $table->text('description');
             $table->integer('category_id')->unsigned()->index();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->integer('category_id')->unsigned()->index();
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->integer('price');
+            $table->text('title_image');
+            $table->boolean('availability')->default(true);
         });
     }
 

@@ -13,6 +13,11 @@ const links = [
         link: '/admin/categories'
     },
     {
+        id: 8,
+        name: 'Телефоны',
+        link: '/admin/phones'
+    },
+    {
         id: 3,
         name: 'Продукты',
         link: '/admin/products'

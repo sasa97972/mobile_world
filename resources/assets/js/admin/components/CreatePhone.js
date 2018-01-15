@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import {Link, withRouter} from 'react-router-dom';
 
 
-class CreateCategory extends Component
+class CreatePhone extends Component
 {
     constructor(props) {
         super(props);
         this.state = {
             name: "",
-            description: "",
+            model: "",
             button: false
         }
     }
 
     handleInput(event) {
         this.setState({[event.target.name]: event.target.value}, () => {
-            if(this.state.description && this.state.name) {
+            if(this.state.model && this.state.name) {
                 this.setState({button: true});
             } else {
                 this.setState({button: false});
@@ -25,7 +25,7 @@ class CreateCategory extends Component
 
     saveData() {
         let settings = {
-            url: "/api/admin/categories",
+            url: "/api/admin/phones",
             "async": true,
             "crossDomain": true,
             "method": "post",
@@ -34,7 +34,7 @@ class CreateCategory extends Component
             },
             "data": {
                 name: this.state.name,
-                description: this.state.description
+                model: this.state.model
             }
         };
 
@@ -48,12 +48,12 @@ class CreateCategory extends Component
     }
 
     handleMore() {
-        this.setState({name: "", description: ""});
+        this.setState({name: "", model: ""});
     }
 
     handleBack() {
         $("#successModal").modal('hide');
-        this.props.history.push("/admin/categories");
+        this.props.history.push("/admin/phones");
     };
 
     handleSubmit(event) {
@@ -71,8 +71,8 @@ class CreateCategory extends Component
             <main role="main" className="col-sm-9 ml-sm-auto col-md-10 pt-3 dash__main">
                 <div className="row">
                     <div className="col-md-8">
-                    <h1 className="display-4">Добавить новую категорию</h1>
-                </div>
+                        <h1 className="display-4">Добавить новый телефон</h1>
+                    </div>
                     <div className="col-md-4 align-self-center">
                         <Link to="/admin/categories" type="button" className="btn btn-warning btn-block" role="button">
                             Вернуться назад
@@ -83,7 +83,7 @@ class CreateCategory extends Component
                     <div className="col-md-12">
                         <form>
                             <div className="form-group">
-                                <label>Название категории</label>
+                                <label>Марка телефона</label>
                                 <input
                                     type="text"
                                     className="form-control"
@@ -93,11 +93,11 @@ class CreateCategory extends Component
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Описание категории</label>
-                                <textarea
+                                <label>Модель телефона</label>
+                                <input
+                                    type="text"
                                     className="form-control"
-                                    name="description"
-                                    rows="3"
+                                    name="model"
                                     value={this.state.description}
                                     onChange={(e) => {this.handleInput(e)}}
                                 />
@@ -119,7 +119,7 @@ class CreateCategory extends Component
                     <div className="modal-dialog modal-dialog-centered" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLongTitle">Категория успешно создана</h5>
+                                <h5 className="modal-title" id="exampleModalLongTitle">Телефон успешно добавлен</h5>
                             </div>
                             <div className="modal-footer">
                                 <button
@@ -133,7 +133,7 @@ class CreateCategory extends Component
                                     className="btn btn-primary"
                                     onClick={() => this.handleBack()}
                                 >
-                                    Вернуться к категориям
+                                    Вернуться к списку телефонов
                                 </button>
                             </div>
                         </div>
@@ -145,4 +145,4 @@ class CreateCategory extends Component
     }
 }
 
-export default withRouter(CreateCategory);
+export default withRouter(CreatePhone);

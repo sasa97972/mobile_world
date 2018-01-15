@@ -2,21 +2,22 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import Pagination from './Pagination';
 
-export default class Categories extends Component
+export default class Products extends Component
 {
     constructor(props) {
         super(props);
         this.state = {
-            url: "/api/admin/categories",
+            url: "/api/admin/products",
             perPage: 10,
             load: true,
-            categories: null,
+            products: null,
             pagination: null,
             search: "",
             isSearch: false,
             button: false,
             sortBy: "created_at",
-            sort: "asc"
+            sort: "asc",
+            with: null
         };
         this.getData = this.getData.bind(this);
     }
@@ -26,10 +27,12 @@ export default class Categories extends Component
     }
 
     getData() {
+        const prefix = this.state.with ? `&with=${this.state.with}` : "";
+
         const url = this.state.url.search(/\?/igm) !== -1 ?
-            `${this.state.url}&perPage=${this.state.perPage}&sortBy=${this.state.sortBy}&sort=${this.state.sort}`
+            `${this.state.url}&perPage=${this.state.perPage}&sortBy=${this.state.sortBy}&sort=${this.state.sort}${prefix}`
             : `
-            ${this.state.url}?perPage=${this.state.perPage}&sortBy=${this.state.sortBy}&sort=${this.state.sort}`;
+            ${this.state.url}?perPage=${this.state.perPage}&sortBy=${this.state.sortBy}&sort=${this.state.sort}${prefix}`;
 
         let settings = {
             "async": true,
@@ -46,7 +49,7 @@ export default class Categories extends Component
         axios(settings).then(response => {
             const data = response.data;
             self.setState({
-                categories: data.data,
+                products: data.data,
                 load: false,
                 pagination: {
                     next_page: data.next_page_url,
@@ -61,7 +64,7 @@ export default class Categories extends Component
     }
 
     handleDelete(id) {
-        if(!confirm("Вы действительно хотите удалить категорию ?")) {
+        if(!confirm("Вы действительно хотите удалить товар ?")) {
             return false;
         }
 
@@ -72,7 +75,7 @@ export default class Categories extends Component
             "headers": {
                 token: this.props.token
             },
-            "url": `/api/admin/categories/${id}`,
+            "url": `/api/admin/products/${id}`,
         };
 
         const self = this;
@@ -103,7 +106,7 @@ export default class Categories extends Component
         if(!this.state.button) {
             return;
         }
-        this.setState({url: `/api/categories/search/${this.state.search}`, isSearch: true}, () => {
+        this.setState({url: `/api/products/search/${this.state.search}`, isSearch: true}, () => {
             this.getData();
         });
     }
@@ -120,8 +123,22 @@ export default class Categories extends Component
         });
     }
 
+    handleChangeSortBy(event) {
+        const value = event.target.options[event.target.selectedIndex].value;
+        if(value.search(/with_/igm) !== -1) {
+            const parts = value.split('_');
+            this.setState({with: parts[1],sortBy: parts[2]}, () => {
+                this.getData();
+            });
+        } else {
+            this.setState({with: null , sortBy: value}, () => {
+                this.getData();
+            });
+        }
+    }
+
     handleSearchBack() {
-        this.setState({search: "", isSearch: false, button: false, url: "/api/admin/categories"}, () => {
+        this.setState({search: "", isSearch: false, button: false, url: "/api/admin/products"}, () => {
             this.getData();
         });
     }
@@ -144,13 +161,14 @@ export default class Categories extends Component
                     </div>
                     :
                     <div>
+
                         <div className="row">
                             <div className="col-md-8">
-                                <h1 className="display-4">Категории</h1>
+                                <h1 className="display-4">Товары</h1>
                             </div>
                             <div className="col-md-4 align-self-center">
-                                <Link to="/admin/categories/create" type="button" className="btn btn-success btn-block" role="button">
-                                    Добавить категорию
+                                <Link to="/admin/phones/create" type="button" className="btn btn-success btn-block" role="button">
+                                    Добавить товар
                                 </Link>
                             </div>
                             <div className="col-md-12">
@@ -159,20 +177,20 @@ export default class Categories extends Component
                                         <input
                                             type="text"
                                             className="form-control"
-                                            placeholder="Поиск категорий"
-                                            aria-label="Поиск категорий"
+                                            placeholder="Поиск товаров"
+                                            aria-label="Поиск товаров"
                                             onChange={(e) => {this.handleInput(e)}}
                                             value={this.state.search}
                                         />
                                         <div className="input-group-append">
                                             {this.state.isSearch &&
-                                                <button
-                                                    className="btn btn-warning"
-                                                    type="button"
-                                                    onClick={() => {this.handleSearchBack()}}
-                                                >
-                                                    Вернутся ко всем категориям
-                                                </button>
+                                            <button
+                                                className="btn btn-warning"
+                                                type="button"
+                                                onClick={() => {this.handleSearchBack()}}
+                                            >
+                                                Вернутся ко всем товарам
+                                            </button>
                                             }
                                             <button
                                                 className={this.state.button ?
@@ -190,10 +208,12 @@ export default class Categories extends Component
                                     </div>
                                 </div>
                             </div>
+
                             <div className="col-md-12">
                                 <div className="form-group row">
-                                    <label className="col-md-2 col-form-label">Количество категорий на странице:</label>
-                                    <div className="col-md-4 align-self-center">
+
+                                    <label className="col-md-2 col-form-label">Количество товаров на странице:</label>
+                                    <div className="col-md-2 align-self-center">
                                         <select
                                             id="perPage"
                                             className="custom-select custom-select-md"
@@ -204,17 +224,33 @@ export default class Categories extends Component
                                             <option value="30">30</option>
                                         </select>
                                     </div>
-                                    <label className="col-md-2 align-self-center col-form-label">Показывать сначала:</label>
-                                    <div className="col-md-4 align-self-center">
+
+                                    <label className="col-md-2 align-self-center col-form-label">Сортировать по:</label>
+                                    <div className="col-md-2 align-self-center">
+                                        <select
+                                            id="sort"
+                                            className="custom-select custom-select-md"
+                                            onChange={(e) => {this.handleChangeSortBy(e)}}
+                                        >
+                                            <option value="created_at">Дате создания</option>
+                                            <option value="title">Названию</option>
+                                            <option value="with_category_name">Категории</option>
+                                            <option value="with_phones_model">Модели телефона</option>
+                                        </select>
+                                    </div>
+
+                                    <label className="col-md-2 align-self-center col-form-label">Порядок сортировки:</label>
+                                    <div className="col-md-2 align-self-center">
                                         <select
                                             id="sort"
                                             className="custom-select custom-select-md"
                                             onChange={(e) => {this.handleChangeSort(e)}}
                                         >
-                                            <option value="asc">Самые старые</option>
-                                            <option value="desc">Самые новые</option>
+                                            <option value="asc">По возрастанию</option>
+                                            <option value="desc">По убыванию</option>
                                         </select>
                                     </div>
+
                                 </div>
                             </div>
                             <div className="col-md-12">
@@ -225,19 +261,25 @@ export default class Categories extends Component
                                             <th scope="col">#</th>
                                             <th scope="col">Название</th>
                                             <th scope="col">Описание</th>
+                                            <th scope="col">Категория</th>
+                                            <th scope="col">Модель телефона</th>
                                             <th scope="col" className="dashboard__table-actions">Действия</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            {this.state.categories.map((category) => (
-                                                <CategoryBlock
-                                                    key={category.id}
-                                                    id={category.id}
-                                                    description={category.description}
-                                                    name={category.name}
-                                                    deleteCat={() => {this.handleDelete(category.id)}}
-                                                />
-                                            ))}
+                                        {this.state.products.map((product) => (
+                                            <ProductBlock
+                                                key={product.id}
+                                                id={product.id}
+                                                title={product.title}
+                                                description={product.description}
+                                                category={product.category.name}
+                                                phones={product.phones}
+                                                deletePhone={() => {
+                                                    this.handleDelete(product.id)
+                                                }}
+                                            />
+                                        ))}
                                         </tbody>
                                     </table>
                                 </div>
@@ -256,27 +298,31 @@ export default class Categories extends Component
     }
 }
 
-const CategoryBlock = (props) => {
-    const {id, name, description, deleteCat} = props;
+const ProductBlock = (props) => {
+    const {id, title, description, category, phones, deleteProduct} = props;
     return(
         <tr>
             <th scope="row">{id}</th>
-            <td>{name}</td>
+            <td>{title}</td>
             <td>{description}</td>
+            <td>{category}</td>
+            <td>{phones.map((phone) => (
+                `${phone.model} `
+            ))}</td>
             <td className="dashboard__table-actions">
                 <div className="btn-group" role="group">
                     <Link
                         type="button"
                         role="button"
                         className="btn btn-secondary"
-                        to={`/admin/categories/edit/${id}`}
+                        to={`/admin/products/edit/${id}`}
                     >
                         Редактировать
                     </Link>
                     <button
                         type="button"
                         className="btn btn-secondary btn-danger"
-                        onClick={deleteCat}
+                        onClick={deleteProduct}
                     >
                         Удалить
                     </button>

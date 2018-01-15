@@ -2,15 +2,15 @@ import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
 import Pagination from './Pagination';
 
-export default class Categories extends Component
+export default class Phones extends Component
 {
     constructor(props) {
         super(props);
         this.state = {
-            url: "/api/admin/categories",
+            url: "/api/admin/phones",
             perPage: 10,
             load: true,
-            categories: null,
+            phones: null,
             pagination: null,
             search: "",
             isSearch: false,
@@ -46,7 +46,7 @@ export default class Categories extends Component
         axios(settings).then(response => {
             const data = response.data;
             self.setState({
-                categories: data.data,
+                phones: data.data,
                 load: false,
                 pagination: {
                     next_page: data.next_page_url,
@@ -61,7 +61,7 @@ export default class Categories extends Component
     }
 
     handleDelete(id) {
-        if(!confirm("Вы действительно хотите удалить категорию ?")) {
+        if(!confirm("Вы действительно хотите удалить телефон ?")) {
             return false;
         }
 
@@ -72,7 +72,7 @@ export default class Categories extends Component
             "headers": {
                 token: this.props.token
             },
-            "url": `/api/admin/categories/${id}`,
+            "url": `/api/admin/phones/${id}`,
         };
 
         const self = this;
@@ -103,7 +103,7 @@ export default class Categories extends Component
         if(!this.state.button) {
             return;
         }
-        this.setState({url: `/api/categories/search/${this.state.search}`, isSearch: true}, () => {
+        this.setState({url: `/api/phones/search/${this.state.search}`, isSearch: true}, () => {
             this.getData();
         });
     }
@@ -121,7 +121,7 @@ export default class Categories extends Component
     }
 
     handleSearchBack() {
-        this.setState({search: "", isSearch: false, button: false, url: "/api/admin/categories"}, () => {
+        this.setState({search: "", isSearch: false, button: false, url: "/api/admin/phones"}, () => {
             this.getData();
         });
     }
@@ -146,11 +146,11 @@ export default class Categories extends Component
                     <div>
                         <div className="row">
                             <div className="col-md-8">
-                                <h1 className="display-4">Категории</h1>
+                                <h1 className="display-4">Телефоны</h1>
                             </div>
                             <div className="col-md-4 align-self-center">
-                                <Link to="/admin/categories/create" type="button" className="btn btn-success btn-block" role="button">
-                                    Добавить категорию
+                                <Link to="/admin/phones/create" type="button" className="btn btn-success btn-block" role="button">
+                                    Добавить телефон
                                 </Link>
                             </div>
                             <div className="col-md-12">
@@ -159,20 +159,20 @@ export default class Categories extends Component
                                         <input
                                             type="text"
                                             className="form-control"
-                                            placeholder="Поиск категорий"
-                                            aria-label="Поиск категорий"
+                                            placeholder="Поиск телефонов"
+                                            aria-label="Поиск телефонов"
                                             onChange={(e) => {this.handleInput(e)}}
                                             value={this.state.search}
                                         />
                                         <div className="input-group-append">
                                             {this.state.isSearch &&
-                                                <button
-                                                    className="btn btn-warning"
-                                                    type="button"
-                                                    onClick={() => {this.handleSearchBack()}}
-                                                >
-                                                    Вернутся ко всем категориям
-                                                </button>
+                                            <button
+                                                className="btn btn-warning"
+                                                type="button"
+                                                onClick={() => {this.handleSearchBack()}}
+                                            >
+                                                Вернутся ко всем телефонам
+                                            </button>
                                             }
                                             <button
                                                 className={this.state.button ?
@@ -192,7 +192,7 @@ export default class Categories extends Component
                             </div>
                             <div className="col-md-12">
                                 <div className="form-group row">
-                                    <label className="col-md-2 col-form-label">Количество категорий на странице:</label>
+                                    <label className="col-md-2 col-form-label">Количество телефонов на странице:</label>
                                     <div className="col-md-4 align-self-center">
                                         <select
                                             id="perPage"
@@ -223,21 +223,21 @@ export default class Categories extends Component
                                         <thead>
                                         <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">Название</th>
-                                            <th scope="col">Описание</th>
+                                            <th scope="col">Марка</th>
+                                            <th scope="col">Модель</th>
                                             <th scope="col" className="dashboard__table-actions">Действия</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                            {this.state.categories.map((category) => (
-                                                <CategoryBlock
-                                                    key={category.id}
-                                                    id={category.id}
-                                                    description={category.description}
-                                                    name={category.name}
-                                                    deleteCat={() => {this.handleDelete(category.id)}}
-                                                />
-                                            ))}
+                                        {this.state.phones.map((phone) => (
+                                            <PhoneBlock
+                                                key={phone.id}
+                                                id={phone.id}
+                                                name={phone.name}
+                                                model={phone.model}
+                                                deletePhone={() => {this.handleDelete(phone.id)}}
+                                            />
+                                        ))}
                                         </tbody>
                                     </table>
                                 </div>
@@ -256,27 +256,27 @@ export default class Categories extends Component
     }
 }
 
-const CategoryBlock = (props) => {
-    const {id, name, description, deleteCat} = props;
+const PhoneBlock = (props) => {
+    const {id, name, model, deletePhone} = props;
     return(
         <tr>
             <th scope="row">{id}</th>
             <td>{name}</td>
-            <td>{description}</td>
+            <td>{model}</td>
             <td className="dashboard__table-actions">
                 <div className="btn-group" role="group">
                     <Link
                         type="button"
                         role="button"
                         className="btn btn-secondary"
-                        to={`/admin/categories/edit/${id}`}
+                        to={`/admin/phones/edit/${id}`}
                     >
                         Редактировать
                     </Link>
                     <button
                         type="button"
                         className="btn btn-secondary btn-danger"
-                        onClick={deleteCat}
+                        onClick={deletePhone}
                     >
                         Удалить
                     </button>

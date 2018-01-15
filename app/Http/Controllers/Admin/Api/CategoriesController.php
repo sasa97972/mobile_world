@@ -19,21 +19,9 @@ class CategoriesController extends Controller
         $perPage = $request->get('perPage');
         $sortBy = $request->get('sortBy');
         $sort = $request->get('sort');
-        return response([
-            "data" => Category::orderBy($sortBy, $sort)->paginate($perPage),
-            "url" => url("api/admin/categories")
-        ]);
+        return response( Category::orderBy($sortBy, $sort)->paginate($perPage));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -43,7 +31,9 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = Category::create($request->all());
+
+        return response()->json($category, 201);
     }
 
     /**
@@ -54,19 +44,9 @@ class CategoriesController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        return response($category);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Category  $category
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Category $category)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -77,17 +57,22 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $category->update($request->all());
+
+        return response()->json($category, 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Category  $category
+     * @param  \App\Category $category
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        return response()->json(null, 204);
     }
 }
