@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\Api;
 
+use App\Category;
+use App\Phone;
 use App\Product;
 use App\Repositories\ProductRepositories;
 use Illuminate\Http\Request;
@@ -38,7 +40,10 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        //
+        return response([
+            "categories" => Category::orderBy('name')->get(),
+            "phones" => Phone::orderBy('name')->get()
+        ]) ;
     }
 
     /**

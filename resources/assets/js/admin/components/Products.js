@@ -158,7 +158,7 @@ export default class Products extends Component
                                 <h1 className="display-4">Товары</h1>
                             </div>
                             <div className="col-md-4 align-self-center">
-                                <Link to="/admin/phones/create" type="button" className="btn btn-success btn-block" role="button">
+                                <Link to="/admin/products/create" type="button" className="btn btn-success btn-block" role="button">
                                     Добавить товар
                                 </Link>
                             </div>

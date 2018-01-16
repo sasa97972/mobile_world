@@ -50,6 +50,11 @@
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover"
+        ],
+        "database-seed": [
+            "@php artisan db:seed --class=CategoriesTableSeeder",
+            "@php artisan db:seed --class=PhonesTableSeeder",
+            "@php artisan db:seed --class=ProductsTableSeeder"
         ]
     },
     "config": {

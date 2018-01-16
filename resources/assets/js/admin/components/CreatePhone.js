@@ -74,7 +74,7 @@ class CreatePhone extends Component
                         <h1 className="display-4">Добавить новый телефон</h1>
                     </div>
                     <div className="col-md-4 align-self-center">
-                        <Link to="/admin/categories" type="button" className="btn btn-warning btn-block" role="button">
+                        <Link to="/admin/phones" type="button" className="btn btn-warning btn-block" role="button">
                             Вернуться назад
                         </Link>
                     </div>

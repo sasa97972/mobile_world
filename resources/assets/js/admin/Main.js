@@ -11,6 +11,7 @@ import Phones from './components/Phones';
 import CreatePhone from './components/CreatePhone';
 import EditPhone from './components/EditPhone';
 import Products from './components/Products';
+import CreateProduct from './components/CreateProduct'
 import {Layout} from './components/BasicLayout';
 
 const token = "verySecretToken";
@@ -43,6 +44,9 @@ if (document.getElementById('root')) {
                 )}/>
                 <Route path="/admin/products" exact render={(props) => (
                     <Products {...props} token={token}/>
+                )}/>
+                <Route path="/admin/products/create" exact render={(props) => (
+                    <CreateProduct {...props} token={token}/>
                 )}/>
             </Layout>
         </Router>,
