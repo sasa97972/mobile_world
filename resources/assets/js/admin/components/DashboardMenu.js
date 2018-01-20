@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
+import {withRouter} from "react-router";
 
 const links = [
     {
@@ -20,7 +21,8 @@ const links = [
     {
         id: 3,
         name: 'Продукты',
-        link: '/admin/products'
+        link: '/admin/products',
+        relative: '/admin/images'
     },
     {
         id: 5,
@@ -39,12 +41,29 @@ const links = [
     }
 ];
 
-export default class DashboardMenu extends Component {
+class DashboardMenu extends Component {
     constructor(props) {
         super(props);
         this.state = {
             activeId: 1,
         }
+    }
+
+    componentDidMount() {
+        const index = DashboardMenu.find(links, this.props.location.pathname);
+        this.setState({activeId: index})
+    }
+
+    static find(array, value) {
+        for(let i = 1; i < array.length; i++) {
+            if(
+                value.search(array[i].link) !== -1 ||
+                (array[i].relative && value.search(array[i].relative) !== -1 )
+            )
+                return array[i].id
+        }
+
+        return 1;
     }
 
     handleClick(e, id) {
@@ -85,3 +104,5 @@ const DashboardLink = (props) => {
       </li>
     );
 };
+
+export default withRouter(DashboardMenu)

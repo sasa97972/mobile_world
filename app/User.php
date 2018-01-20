@@ -37,6 +37,17 @@ class User extends Authenticatable
         return ($this->role == "admin") ? true : false;
     }
 
+    /**
+     * @return bool
+     */
+    public function isSuperAdmin()
+    {
+        return ($this->role == "super_admin") ? true : false;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function orders()
     {
         return $this->hasMany(Order::class);

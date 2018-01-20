@@ -8,6 +8,8 @@ use App\Product;
 use App\Repositories\ProductRepositories;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Session\Store;
+use Illuminate\Support\Facades\Storage;
 
 class ProductsController extends Controller
 {
@@ -54,7 +56,23 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $product = new Product();
+
+        $product->title = $request->title;
+        $product->description = $request->description;
+        $product->price = $request->price;
+        $product->category_id = $request->category_id;
+        if($request->file('image')) {
+            $path = $request->file('image')->store('products', 'public');
+            $product->title_image = $path;
+        }
+        $product->save();
+
+        if($request->phones_id) {
+            $product->phones()->attach(explode(",", $request->phones_id));
+        }
+
+        return response($product->id);
     }
 
     /**
@@ -71,12 +89,20 @@ class ProductsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Product  $product
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit($id)
     {
-        //
+        $product = Product::with('category', 'phones')->find($id);
+        if($product->title_image) {
+            $product->title_image = Storage::url($product->title_image);
+        }
+        return response([
+            "categories" => Category::orderBy('name')->get(),
+            "phones" => Phone::orderBy('name')->get(),
+            "product" => $product
+        ]) ;
     }
 
     /**
@@ -88,17 +114,38 @@ class ProductsController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $path = $product->title_image;
+        if($request->file('image')) {
+            if(Storage::exists($product->title_image)) {
+                Storage::delete($product->title_image);
+            }
+            $path = $request->file('image')->store('products', 'public');
+        }
+
+        $product->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'price' => $request->price,
+            'category_id' => $request->category_id,
+            'title_image' => $path,
+        ]);
+
+        $product->phones()->sync(explode(",", $request->phones_id));
+
+        return response()->json($product, 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Product  $product
+     * @param  \App\Product $product
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+
+        return response()->json(null, 204);
     }
 }

@@ -10,10 +10,11 @@ class Product extends Model
     use Commentable;
 
     protected $fillable = [
-      'title',
-      'description',
-      'category_id',
-      'price'
+        'title',
+        'description',
+        'category_id',
+        'price',
+        'title_image'
     ];
 
     protected $mustBeApproved = false;
@@ -26,5 +27,9 @@ class Product extends Model
     public function phones()
     {
         return $this->belongsToMany('App\Phone', 'products_phones');
+    }
+
+    public function images() {
+        return $this->hasMany(Image::class);
     }
 }

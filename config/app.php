@@ -167,6 +167,8 @@ return [
         /*
          * Package Service Providers...
          */
+        App\Providers\ProductsServiceProvider::class,
+        App\Providers\ImagesServiceProvider::class,
 
         /*
          * Application Service Providers...

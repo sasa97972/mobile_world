@@ -24,5 +24,6 @@ Route::resource('products', 'Site\ProductsController');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('/', 'DashboardController@index')->name('admin');
+    Route::get('/{category?}/{subcategory?}/{id?}', 'DashboardController@index')->name('admin');
 });
 

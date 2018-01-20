@@ -29,5 +29,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'api.token', 'namespace' => '
     Route::resource('categories', 'CategoriesController');
     Route::resource('phones', 'PhonesController');
     Route::resource('products', 'ProductsController');
+    Route::resource('images', 'ImagesController');
 });
 

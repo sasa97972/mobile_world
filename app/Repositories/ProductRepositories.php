@@ -18,8 +18,8 @@ class ProductRepositories
     public function search($word, $perPage, $sortBy, $sort)
     {
         return Product::with('category', 'phones')
-            ->join('products_phones', 'products.id', '=', 'products_phones.product_id')
-            ->join('phones', 'products_phones.phone_id', '=', 'phones.id')
+            ->leftJoin('products_phones', 'products.id', '=', 'products_phones.product_id')
+            ->leftJoin('phones', 'products_phones.phone_id', '=', 'phones.id')
             ->join('categories', 'products.category_id', '=', 'categories.id')
             ->select('products.*', 'phones.model', 'categories.name')
             ->where('title', 'like', "%$word%")
@@ -39,11 +39,12 @@ class ProductRepositories
     public function getWithSort($perPage, $sortBy, $sort)
     {
         return Product::with('category', 'phones')
-            ->join('products_phones', 'products.id', '=', 'products_phones.product_id')
-            ->join('phones', 'products_phones.phone_id', '=', 'phones.id')
-            ->join('categories', 'products.category_id', '=', 'categories.id')
             ->select('products.*', 'phones.model', 'categories.name')
+            ->leftJoin('products_phones', 'products.id', '=', 'products_phones.product_id')
+            ->leftJoin('phones', 'products_phones.phone_id', '=', 'phones.id')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
             ->orderBy($sortBy, $sort)
+            ->groupBy('products.id')
             ->paginate($perPage);
     }
 }

@@ -3,14 +3,14 @@ import {Link, withRouter} from 'react-router-dom';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 
-class CreateProduct extends Component
+class EditProduct extends Component
 {
     constructor(props) {
         super(props);
         this.state = {
             title: "",
             description: "",
-            category_id: 1,
+            category_id: null,
             phones_selected: [],
             price: 0,
             image: null,
@@ -19,11 +19,12 @@ class CreateProduct extends Component
             categories: null,
             phones: null,
             load: true,
-            product_id: null
+            product_id: this.props.match.params.product_id
         };
 
         this.getInitialData = this.getInitialData.bind(this);
         this.handleChangeMultiSelect = this.handleChangeMultiSelect.bind(this);
+        this.saveData = this.saveData.bind(this);
     }
 
     handleInput(event) {
@@ -42,7 +43,7 @@ class CreateProduct extends Component
 
     getInitialData() {
         let settings = {
-            url: "/api/admin/products/create",
+            url: `/api/admin/products/${this.state.product_id}/edit`,
             "async": true,
             "crossDomain": true,
             "method": "get",
@@ -53,30 +54,53 @@ class CreateProduct extends Component
 
         const success = axios(settings).then(response =>  {
             const data = response.data;
-            let phones = [];
-            data.phones.map((phone) => {
-               phones.push({value: phone.id, label: `${phone.name} ${phone.model}`})
-            });
+            let phones = this.getPhones(data.phones);
+            const phones_selected = this.getSelectedPhones(data.product.phones);
             this.setState({
                 load: false,
                 categories: data.categories,
-                phones: phones
+                phones: phones,
+                category_id: data.product.category.id,
+                phones_selected: phones_selected,
+                title: data.product.title,
+                description: data.product.description,
+                price: data.product.price,
+                imagePreviewUrl: data.product.title_image
             });
         });
     }
 
+    getSelectedPhones(array) {
+        let phones_selected = [];
+        array.map((phone) => {
+            phones_selected.push(phone.id);
+        });
+        return phones_selected.join();
+    }
+
+    getPhones(array) {
+        let phones = [];
+        array.map((phone) => {
+            phones.push({value: phone.id, label: `${phone.name} ${phone.model}`})
+        });
+        return phones;
+    }
+
     saveData() {
         const data = new FormData();
-        data.append("image", this.state.image);
+        if(this.state.image) {
+            data.append("image", this.state.image);
+        }
         data.append("title", this.state.title);
         data.append("description", this.state.description);
         data.append("price", `${this.state.price}`);
         data.append("category_id", `${this.state.category_id}`);
         data.append("phones_id", `${this.state.phones_selected}`);
+        data.append("_method", 'PUT');
 
         let settings = {
-            url: "/api/admin/products",
-            "method": "post",
+            url: `/api/admin/products/${this.state.product_id}`,
+            "method": "POST",
             "async": true,
             "crossDomain": true,
             "headers": {
@@ -85,31 +109,15 @@ class CreateProduct extends Component
             "data": data
         };
 
-        const success = axios(settings).then(response =>  {
-            this.setState({product_id: response.data});
-            return response.statusText === "Created";
+        return axios(settings).then(response => {
+            return response.statusText === "Updated";
         });
-
-        return !!success;
     }
 
     handleBack() {
         $("#successModal").modal('hide');
         this.props.history.push("/admin/products");
     };
-
-    handleMore(){
-        this.setState({
-            title: "",
-            description: "",
-            category_id: 1,
-            phone_id: 1,
-            price: 0,
-            image: null,
-            imagePreviewUrl: ""
-        });
-        $("#successModal").modal('hide');
-    }
 
     handleMoreImages() {
         $("#successModal").modal('hide');
@@ -118,14 +126,16 @@ class CreateProduct extends Component
 
     handleChangeSelect(event) {
         this.setState({
-            [event.target.name]: event.target.options[event.target.selectedIndex].value
+            [event.target.name]: event.target.options[event.target.selectedIndex].value,
+            button: true
         });
     }
 
     handleChangeMultiSelect(selectedOptions) {
-       this.setState({
-           phones_selected: selectedOptions
-       });
+        this.setState({
+            phones_selected: selectedOptions,
+            button: true,
+        });
     }
 
     handleFileUpload(event) {
@@ -135,7 +145,8 @@ class CreateProduct extends Component
         reader.onloadend = () => {
             this.setState({
                 image: file,
-                imagePreviewUrl: reader.result
+                imagePreviewUrl: reader.result,
+                button: true,
             });
         };
 
@@ -171,10 +182,15 @@ class CreateProduct extends Component
                     :
                     <div>
                         <div className="row">
-                            <div className="col-md-8">
+                            <div className="col-md-6">
                                 <h1 className="display-4">Добавить новый товар</h1>
                             </div>
-                            <div className="col-md-4 align-self-center">
+                            <div className="col-md-3 align-self-center">
+                                <Link to={`/admin/images/${this.state.product_id}`} type="button" className="btn btn-primary btn-block" role="button">
+                                    Дополнительные изображения
+                                </Link>
+                            </div>
+                            <div className="col-md-3 align-self-center">
                                 <Link to="/admin/products" type="button" className="btn btn-warning btn-block" role="button">
                                     Вернуться назад
                                 </Link>
@@ -256,7 +272,7 @@ class CreateProduct extends Component
                                                 {this.state.image ? "Изображение добавлено!" : "Выберите изображение"}
                                             </label>
                                         </div>
-                                        {this.state.image &&
+                                        {this.state.imagePreviewUrl &&
                                         <div className="preview-image-container">
                                             <img src={this.state.imagePreviewUrl}/>
                                         </div>
@@ -271,7 +287,7 @@ class CreateProduct extends Component
                                             "btn btn-primary disabled"
                                         }
                                         onClick={(e) => {this.handleSubmit(e)}}
-                                    >Добавить</button>
+                                    >Редактировать</button>
                                 </form>
                             </div>
                         </div>
@@ -281,7 +297,7 @@ class CreateProduct extends Component
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLongTitle">Категория успешно создана</h5>
+                                <h5 className="modal-title" id="exampleModalLongTitle">Товар успешно отредактирован</h5>
                             </div>
                             <div className="modal-footer">
                                 <div className="btn-group" role="group">
@@ -289,13 +305,7 @@ class CreateProduct extends Component
                                         type="button"
                                         className="btn btn-success"
                                         onClick={() => {this.handleMoreImages()}}
-                                    >Добавить дополнительные изображения для созданого товара</button>
-                                    <button
-                                        type="button"
-                                        className="btn btn-secondary"
-                                        data-dismiss="modal"
-                                        onClick={() => {this.handleMore()}}
-                                    >Добавить ещё товар</button>
+                                    >Добавить дополнительные изображения для отредактированного товара</button>
                                     <button
                                         type="button"
                                         className="btn btn-primary"
@@ -314,4 +324,4 @@ class CreateProduct extends Component
     }
 }
 
-export default withRouter(CreateProduct);
+export default withRouter(EditProduct);

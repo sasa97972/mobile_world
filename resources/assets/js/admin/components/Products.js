@@ -259,19 +259,19 @@ export default class Products extends Component
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        {this.state.products.map((product) => (
-                                            <ProductBlock
+                                        {this.state.products.map((product) => {
+                                           return( <ProductBlock
                                                 key={product.id}
                                                 id={product.id}
                                                 title={product.title}
                                                 description={product.description}
                                                 category={product.category.name}
                                                 phones={product.phones}
-                                                deletePhone={() => {
+                                                deleteProduct={() => {
                                                     this.handleDelete(product.id)
                                                 }}
-                                            />
-                                        ))}
+                                            /> )
+                                        })}
                                         </tbody>
                                     </table>
                                 </div>
@@ -298,9 +298,9 @@ const ProductBlock = (props) => {
             <td>{title}</td>
             <td>{description}</td>
             <td>{category}</td>
-            <td>{phones.map((phone) => (
-                `${phone.model} `
-            ))}</td>
+            <td>{phones.length ? phones.map((phone) => (
+                <p key={phone.id}>{`${phone.name} ${phone.model}`}</p>
+            )) : 'Отсутствует'}</td>
             <td className="dashboard__table-actions">
                 <div className="btn-group" role="group">
                     <Link
