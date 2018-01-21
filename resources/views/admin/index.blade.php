@@ -50,18 +50,6 @@
 
     <div id="root"></div>
 
-    {{--<div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <form action="{{url('/products')}}" method="post" enctype="multipart/form-data">
-                    {{ csrf_field() }}
-                    <input type="file" name="image"><br>
-                    <input type="submit" value="Загрузить"><br>
-                </form>
-            </div>
-        </div>
-    </div>--}}
-
 <!-- Scripts -->
 <script src="{{ asset('js/site/app.js') }}"></script>
 </body>

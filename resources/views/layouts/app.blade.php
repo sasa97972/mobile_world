@@ -31,7 +31,7 @@
                         <li class="nav-item"><a href="{{ route('login') }}" class="nav-link">Войти</a></li>
                         <li class="nav-item"><a href="{{ route('register') }}" class="nav-link">Регистрация</a></li>
                     @else
-                        @if(Auth::user()->isAdmin())
+                        @if(Auth::user()->isAdmin() || Auth::user()->isSuperAdmin())
                         <li class="nav-item">
                             <a href="{{ route('admin') }}" class="nav-link">
                                 Admin Section

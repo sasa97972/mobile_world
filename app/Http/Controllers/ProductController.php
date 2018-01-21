@@ -14,19 +14,17 @@ class ProductController extends Controller
         //$product = Product::with('category', 'phones')->find($id);
         //$comments = $product->comments();
 
-        $product = Product::with('category', 'phones')
-            ->select('products.*', 'phones.model', 'categories.name')
-            ->leftJoin('products_phones', 'products.id', '=', 'products_phones.product_id')
-            ->leftJoin('phones', 'products_phones.phone_id', '=', 'phones.id')
-            ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->groupBy('products.id')
-            ->get();
+        /*$product = Comment::with('product', 'user')
+            ->select('comments.*', 'products.title', 'user.name', 'user.login')
+            ->join('products', 'comments.commentable_id', '=', 'products.id')
+            ->join('users', 'comments.commented_id', '=', 'users.id')
+            ->paginate(10);*/
 
 
         //$comments = Comment::get()->toTree();
-        //$product=Product::find(1);
-        //Auth::user()->comment($product, 'Lorem ipsum ..');
-        //Auth::user()->comment($product, 'Lorem ipsum .. 2222', 4);
+        $product=Product::find(1);
+        //Auth::user()->comment($product, 'Отличный товар ..');
+        Auth::user()->comment($product, 'Да, товар супер .. 2222');
         return response($product);
     }
 }

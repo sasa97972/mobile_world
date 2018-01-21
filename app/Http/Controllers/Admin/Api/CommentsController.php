@@ -1,22 +1,33 @@
 <?php
 
-namespace App\Http\Controllers\Site;
+namespace App\Http\Controllers\Admin\Api;
 
-use App\Product;
+use App\Comment;
+use App\Repositories\CommentRepositories;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
 
-class ProductsController extends Controller
+class CommentsController extends Controller
 {
+    protected $comments;
+
+    public function __construct(CommentRepositories $comments)
+    {
+        $this->comments = $comments;
+    }
+
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $perPage = $request->get('perPage');
+        $sortBy = $request->get('sortBy');
+        $sort = $request->get('sort');
+        return response($this->comments->getWithSort($perPage, $sortBy, $sort));
     }
 
     /**
@@ -37,20 +48,16 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        $path = $request->file('image')->store('images/'.$request->user()->id);
-
-        //Storage::delete('images\BBmUvsqVsieNukPGEa75MdiNdjPsfjNlHxJGyzQG.png');
-
-        return response(123);
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Product  $product
+     * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(Comment $comment)
     {
         //
     }
@@ -58,10 +65,10 @@ class ProductsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Product  $product
+     * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit(Comment $comment)
     {
         //
     }
@@ -70,10 +77,10 @@ class ProductsController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Product  $product
+     * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, Comment $comment)
     {
         //
     }
@@ -81,10 +88,10 @@ class ProductsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Product  $product
+     * @param  \App\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Comment $comment)
     {
         //
     }

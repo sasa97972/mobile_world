@@ -14,6 +14,7 @@ import Products from './components/Products';
 import CreateProduct from './components/CreateProduct';
 import EditProduct from './components/EditProduct';
 import AddImages from './components/AddImages';
+import Comments from './components/Comments';
 import {Layout} from './components/BasicLayout';
 
 const token = "verySecretToken";
@@ -68,6 +69,9 @@ class App extends Component
                     )}/>
                     <Route path="/admin/products/edit/:product_id" exact render={(props) => (
                         <EditProduct {...props} token={this.state.token}/>
+                    )}/>
+                    <Route path="/admin/comments" exact render={(props) => (
+                        <Comments {...props} token={this.state.token}/>
                     )}/>
                 </Layout>
             </Router>

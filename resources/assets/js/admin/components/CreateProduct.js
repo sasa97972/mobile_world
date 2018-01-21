@@ -281,7 +281,7 @@ class CreateProduct extends Component
                     <div className="modal-dialog modal-lg" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
-                                <h5 className="modal-title" id="exampleModalLongTitle">Категория успешно создана</h5>
+                                <h5 className="modal-title" id="exampleModalLongTitle">Товар успешно создан</h5>
                             </div>
                             <div className="modal-footer">
                                 <div className="btn-group" role="group">

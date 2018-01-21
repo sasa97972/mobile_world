@@ -14,7 +14,14 @@ trait Commentable
      */
     public function comments()
     {
-       // return $this->morphMany(Comment::class, 'commentable');
+        return $this->morphMany(Comment::class, 'commentable');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function commentsTree()
+    {
         $comments = Comment::where("commentable_id", $this->id)->get()->toTree();
         return $comments;
     }

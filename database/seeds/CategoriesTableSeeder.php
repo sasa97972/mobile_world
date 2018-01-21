@@ -16,7 +16,7 @@ class CategoriesTableSeeder extends Seeder
 
         for ($i = 0; $i < 15; $i++) {
             Category::create([
-                'name' => $faker->title,
+                'name' => $faker->word,
                 'description' => $faker->paragraph,
             ]);
         }

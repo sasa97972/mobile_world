@@ -18,12 +18,13 @@ class ProductRepositories
     public function search($word, $perPage, $sortBy, $sort)
     {
         return Product::with('category', 'phones')
+            ->select('products.*', 'phones.model', 'phones.name', 'categories.name')
             ->leftJoin('products_phones', 'products.id', '=', 'products_phones.product_id')
             ->leftJoin('phones', 'products_phones.phone_id', '=', 'phones.id')
             ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->select('products.*', 'phones.model', 'categories.name')
             ->where('title', 'like', "%$word%")
             ->orWhere('phones.model', 'like', "%$word%")
+            ->orWhere('phones.name', 'like', "%$word%")
             ->orWhere('categories.name', 'like', "%$word%")
             ->orderBy($sortBy, $sort)
             ->paginate($perPage);

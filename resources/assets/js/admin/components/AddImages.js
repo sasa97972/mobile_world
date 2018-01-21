@@ -56,7 +56,6 @@ class AddImages extends Component
 
         const success = axios(settings).then(response =>  {
             const data = response.data;
-            console.log(data);
             this.setState({
                 load: false,
                 images: data,
@@ -113,7 +112,7 @@ class AddImages extends Component
                                 </Link>
                             </div>
                             <div className="col-md-3 align-self-center">
-                                <Link to={`/admin/products/edit/${this.state.product_id}`} type="button" className="btn btn-warning btn-block" role="button">
+                                <Link to={`/admin/products/edit/${this.state.product_id}`} type="button" className="btn btn-primary btn-block" role="button">
                                     Вернуться к редактированию товара
                                 </Link>
                             </div>
