@@ -54,12 +54,12 @@ class CommentsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Comment  $comment
+     * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Comment $comment)
+    public function show($id)
     {
-        //
+        return(response(Comment::with('user', 'product')->find($id)));
     }
 
     /**
@@ -82,17 +82,23 @@ class CommentsController extends Controller
      */
     public function update(Request $request, Comment $comment)
     {
-        //
+        $comment->update([
+            'comment' => $request->text
+        ]);
+
+        return(response()->json($comment, 200));
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Comment  $comment
+     * @param  \App\Comment $comment
      * @return \Illuminate\Http\Response
+     * @throws \Exception
      */
     public function destroy(Comment $comment)
     {
-        //
+        $comment->delete();
+        return(response()->json(null, 200));
     }
 }

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
-import {withRouter} from 'react-router'
 
 import Dashboard from './components/Dashboard';
 import DashboardMenu from './components/DashboardMenu';
@@ -15,9 +14,10 @@ import CreateProduct from './components/CreateProduct';
 import EditProduct from './components/EditProduct';
 import AddImages from './components/AddImages';
 import Comments from './components/Comments';
+import EditComment from './components/EditComment';
+import Users from './components/Users';
+import EditUser from './components/Edituser';
 import {Layout} from './components/BasicLayout';
-
-const token = "verySecretToken";
 
 class App extends Component
 {
@@ -26,10 +26,6 @@ class App extends Component
         this.state = {
             token: "verySecretToken",
         }
-    }
-
-    componentDidMount() {
-
     }
 
     render() {
@@ -72,6 +68,15 @@ class App extends Component
                     )}/>
                     <Route path="/admin/comments" exact render={(props) => (
                         <Comments {...props} token={this.state.token}/>
+                    )}/>
+                    <Route path="/admin/comments/edit/:commentId" exact render={(props) => (
+                        <EditComment {...props} token={this.state.token}/>
+                    )}/>
+                    <Route path="/admin/users" exact render={(props) => (
+                        <Users {...props} token={this.state.token}/>
+                    )}/>
+                    <Route path="/admin/users/edit/:user_id" exact render={(props) => (
+                        <EditUser {...props} token={this.state.token}/>
                     )}/>
                 </Layout>
             </Router>

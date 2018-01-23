@@ -3,6 +3,13 @@
 
 // Variables
 @import "variables";
+@import "mixins";
 
 // Bootstrap
 @import "~bootstrap/scss/bootstrap";
+
+//Libs
+@import "libs/open-iconic-bootstrap.min.css";
+
+//Partials
+@import "navbar/navbar";

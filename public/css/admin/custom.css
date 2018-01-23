@@ -105,6 +105,10 @@
     margin-bottom: 20px;
 }
 
+.comment__info {
+    margin-bottom: 30px;
+}
+
 @media (max-width: 575.99px) {
     .sidebar {
         position: static;

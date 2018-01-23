@@ -10,62 +10,25 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="#000">
+    <!-- Windows Phone -->
+    <meta name="msapplication-navbutton-color" content="#000">
+    <!-- iOS Safari -->
+    <meta name="apple-mobile-web-app-status-bar-style" content="#000">
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-<div id="app">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}">
-                {{ config('app.name', 'Laravel') }}
-            </a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"/>
-            </button>
 
-            <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                <ul class="navbar-nav">
-                    @if (Auth::guest())
-                        <li class="nav-item"><a href="{{ route('login') }}" class="nav-link">Войти</a></li>
-                        <li class="nav-item"><a href="{{ route('register') }}" class="nav-link">Регистрация</a></li>
-                    @else
-                        @if(Auth::user()->isAdmin() || Auth::user()->isSuperAdmin())
-                        <li class="nav-item">
-                            <a href="{{ route('admin') }}" class="nav-link">
-                                Admin Section
-                            </a>
-                        </li>
-                        @endif
-                        <li class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                               aria-haspopup="true" aria-expanded="false">
-                                {{ Auth::user()->name }}
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                                <a href="{{ route('logout') }}" class="dropdown-item"
-                                   onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                                    Выход
-                                </a>
+    @include('site._partials.navbar')
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                      style="display: none;">
-                                    {{ csrf_field() }}
-                                </form>
-                            </div>
-                        </li>
-                    @endif
-                </ul>
-            </div>
-
-        </div>
-    </nav>
-
-    @yield('content')
-</div>
+    <main class="cd-main-content">
+        @yield('content')
+    </main>
 
 <!-- Scripts -->
-<script src="{{ asset('js/site/app.js') }}"></script>
+<script src="{{ asset('js/site/site.js') }}"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
-import {withRouter} from "react-router";
+import {withRouter, browserHistory} from "react-router";
 
 const links = [
     {
@@ -51,8 +51,14 @@ class DashboardMenu extends Component {
 
     componentDidMount() {
         const index = DashboardMenu.find(links, this.props.location.pathname);
-        this.setState({activeId: index})
+        this.setState({activeId: index});
+        this.props.history.listen(location => {
+            const index = DashboardMenu.find(links, location.pathname);
+            this.setState({activeId: index});
+        })
     }
+
+
 
     static find(array, value) {
         for(let i = 1; i < array.length; i++) {

@@ -51,6 +51,6 @@
     <div id="root"></div>
 
 <!-- Scripts -->
-<script src="{{ asset('js/site/app.js') }}"></script>
+<script src="{{ asset('js/site/admin.js') }}"></script>
 </body>
 </html>

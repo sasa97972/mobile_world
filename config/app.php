@@ -169,6 +169,7 @@ return [
          */
         App\Providers\ProductsServiceProvider::class,
         App\Providers\ImagesServiceProvider::class,
+        App\Providers\ViewComposersServiceProvider::class,
 
         /*
          * Application Service Providers...

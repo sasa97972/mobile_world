@@ -45,7 +45,6 @@ export default class Comments extends Component
 
         axios(settings).then(response => {
             const data = response.data;
-            console.log(data);
             self.setState({
                 comments: data.data,
                 load: false,
@@ -117,6 +116,12 @@ export default class Comments extends Component
 
     handleChangeSort(event) {
         this.setState({sort: event.target.options[event.target.selectedIndex].value}, () => {
+            this.getData();
+        });
+    }
+
+    handleChangeSortBy(event) {
+        this.setState({sortBy: event.target.options[event.target.selectedIndex].value}, () => {
             this.getData();
         });
     }

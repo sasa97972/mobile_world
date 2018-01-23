@@ -23,6 +23,7 @@ Route::group(['namespace' => 'Site\Api'], function () {
     Route::get('phones/search/{word?}', 'PhonesController@search')->name('api.phones.search');
     Route::get('products/search/{word?}', 'ProductsController@search')->name('api.products.search');
     Route::get('comments/search/{word?}', 'CommentsController@search')->name('api.comments.search');
+    Route::get('users/search/{word?}', 'UsersController@search')->name('api.users.search');
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => 'api.token', 'namespace' => 'Admin\Api'], function () {
@@ -32,5 +33,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'api.token', 'namespace' => '
     Route::resource('products', 'ProductsController');
     Route::resource('images', 'ImagesController');
     Route::resource('comments', 'CommentsController');
+    Route::resource('users', 'UsersController');
 });
 
