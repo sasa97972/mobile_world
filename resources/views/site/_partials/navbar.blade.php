@@ -11,18 +11,19 @@
             </div>
             <div class="col-md-4 nav__menu">
                 <ul class="nav__list">
+                    <li class="nav__item"><a href="/" class="nav-link <?php if(Request::path() === "home"){ ?>nav-link_active<?php } ?>">Главная</a></li>
                     <li class="nav__item">
-                        <a href="/shop" class="nav-link">Магазин</a>
+                        <a href="/shop" class="nav-link <?php if(Request::path() === "shop/*"){ ?>nav-link_active<?php } ?>">Магазин</a>
                         <ul class="nav__nested-list">
                             @forelse($categories as $category)
-                                <li class="nav__nested-item">{{$category->name}}</li>
+                                <li class="nav__nested-item"><a href="{{"/shop/".$category->alias}}"></a>{{$category->name}}</li>
                             @empty
                                 <li class="nav__nested-item">Здесь ещё нет категорий</li>
                             @endforelse
                         </ul>
                     </li>
-                    <li class="nav__item"><a href="/about" class="nav-link">О нас</a></li>
-                    <li class="nav__item"><a href="/contacts" class="nav-link">Контакты</a></li>
+                    <li class="nav__item"><a href="/about" class="nav-link <?php if(Request::path() === "about"){ ?>nav-link_active<?php } ?>">О нас</a></li>
+                    <li class="nav__item"><a href="/contacts" class="nav-link <?php if(Request::path() === "contacts"){ ?>nav-link_active<?php } ?>">Контакты</a></li>
                 </ul>
             </div>
             <div class="col-md-4 nav__system">
@@ -41,7 +42,7 @@
                         <li class="nav__system-list-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
                                aria-haspopup="true" aria-expanded="false">
-                                {{ Auth::user()->name }} <span class="oi oi-person nav__system-person"/>
+                                {{ Auth::user()->name }} <i class="fas fa-user nav__system-person"></i>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                                 <a href="{{ route('logout') }}" class="dropdown-item"
@@ -56,7 +57,7 @@
                             </div>
                         </li>
                         <li class="nav__system-list-item">
-                            <span class="oi oi-cart nav__system-cart"/>
+                            <i class="fas fa-shopping-cart nav__system-cart"></i>
                         </li>
                     @endif
                 </ul>

@@ -9,7 +9,10 @@
 @import "~bootstrap/scss/bootstrap";
 
 //Libs
-@import "libs/open-iconic-bootstrap.min.css";
+@import "libs/fontawesome-all.min.css";
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
 
 //Partials
-@import "navbar/navbar";
+@import "components/navbar/navbar";
+@import "components/slider-fluid/slider-fluid";

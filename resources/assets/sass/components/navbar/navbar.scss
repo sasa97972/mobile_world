@@ -1,0 +1,154 @@
+@import "../../variables";
+@import "../../mixins";
+@import "../../extends";
+
+.cd-auto-hide-header {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: auto;
+  z-index: 2;
+
+  /* Force Hardware Acceleration */
+  transform: translateZ(0);
+  will-change: transform;
+  transition: transform .5s, background-color .5s, color .5s;
+
+  &.is-hidden {
+    transform: translateY(-100%);
+  }
+}
+
+.nav {
+  background: transparent;
+}
+
+.nav__row {
+  border-bottom: 1px solid rgba(0,0,0,.12);
+}
+
+.nav-link {
+  padding: 5px;
+  color: inherit;
+  transition: color .5s;
+  position: relative;
+
+  &:hover {
+    color: $primary-text-color-light;
+  }
+
+  &.nav-link_active:after {
+    content: "";
+    display: block;
+    height: 3px;
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    background-color: $secondary-color;
+  }
+}
+
+.nav__item > .nav-link {
+  padding: 30px 5px;
+
+  &:not(.nav-link_active):after {
+    content: "";
+    display: block;
+    height: 3px;
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    background-color: $secondary-color;
+    opacity: 0;
+    transition: opacity .5s;
+  }
+
+  &:not(.nav-link_active):hover:after {
+    opacity: 1;
+  }
+}
+
+.nav__name {
+  margin: 0 0 0 10px;
+  font-size: 2rem;
+  letter-spacing: 2px;
+  text-shadow: 1px 1px 1px silver,
+              -1px 1px 1px silver;
+  color: white;
+  transition: text-shadow .5s;
+}
+
+.nav__logo-img {
+  display: block;
+  max-width: 100%;
+  width: 50px;
+  height: auto;
+}
+
+.nav__logo {
+  @extend %flex-row-wrap;
+  @extend %vertical-center;
+}
+
+.nav__logo-link-wrapper {
+  @extend %flex-row-wrap;
+  @extend %vertical-center;
+  &:hover {
+    text-decoration: none;
+  }
+
+  &:hover .nav__name  {
+    text-shadow: 1px 1px white,
+                  2px 2px blue;
+  }
+}
+
+.nav__nested-list {
+  display: none;
+  max-height: 300px;
+  overflow-y: scroll;
+  position: absolute;
+}
+
+.nav__menu {
+  @extend %flex-row-wrap;
+  @extend %vertical-center;
+  @extend %horizontal-center;
+  color: $primary-text-color;
+}
+
+.nav__list {
+  @extend %ul-list;
+}
+
+.nav__item {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.nav__system {
+  @extend %flex-row-wrap;
+  @extend %vertical-center;
+  justify-content: flex-end;
+  color: $primary-text-color;
+}
+
+.nav__system-list {
+  @extend %ul-list;
+}
+
+.nav__system-list-item {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.nav__system-person {
+  margin-left: 5px;
+}
+
+.nav__system-cart {
+  font-size: 1.1rem;
+  position: relative;
+  top: 2px;
+}
+

@@ -225,6 +225,7 @@ export default class Categories extends Component
                                             <th scope="col">#</th>
                                             <th scope="col">Название</th>
                                             <th scope="col">Описание</th>
+                                            <th scope="col">Алиас</th>
                                             <th scope="col" className="dashboard__table-actions">Действия</th>
                                         </tr>
                                         </thead>
@@ -235,6 +236,7 @@ export default class Categories extends Component
                                                     id={category.id}
                                                     description={category.description}
                                                     name={category.name}
+                                                    alias={category.alias}
                                                     deleteCat={() => {this.handleDelete(category.id)}}
                                                 />
                                             ))}
@@ -257,12 +259,13 @@ export default class Categories extends Component
 }
 
 const CategoryBlock = (props) => {
-    const {id, name, description, deleteCat} = props;
+    const {id, name, description, deleteCat, alias} = props;
     return(
         <tr>
             <th scope="row">{id}</th>
             <td>{name}</td>
             <td>{description}</td>
+            <td>{alias}</td>
             <td className="dashboard__table-actions">
                 <div className="btn-group" role="group">
                     <Link

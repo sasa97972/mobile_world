@@ -9,6 +9,7 @@ class EditCategory extends Component
         this.state = {
             name: "",
             description: "",
+            alias: "",
             button: true,
             load: true
         }
@@ -16,7 +17,7 @@ class EditCategory extends Component
 
     handleInput(event) {
         this.setState({[event.target.name]: event.target.value}, () => {
-            if(this.state.description && this.state.name) {
+            if(this.state.description && this.state.name && this.state.alias) {
                 this.setState({button: true});
             } else {
                 this.setState({button: false});
@@ -48,6 +49,7 @@ class EditCategory extends Component
             self.setState({
                 name: data.name,
                 description: data.description,
+                alias: data.alias,
                 load: false
             })
         });
@@ -64,7 +66,8 @@ class EditCategory extends Component
             },
             "data": {
                 name: this.state.name,
-                description: this.state.description
+                description: this.state.description,
+                alias: this.state.alias,
             }
         };
 
@@ -132,6 +135,16 @@ class EditCategory extends Component
                                             className="form-control"
                                             name="name"
                                             value={this.state.name}
+                                            onChange={(e) => {this.handleInput(e)}}
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Алиас категории</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            name="alias"
+                                            value={this.state.alias}
                                             onChange={(e) => {this.handleInput(e)}}
                                         />
                                     </div>

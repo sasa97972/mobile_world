@@ -22,12 +22,12 @@ class ProductController extends Controller
 
 
         //$comments = Comment::get()->toTree();
-        $product=Product::find(1);
+        /*$product=Product::find(1);
         Auth::user()->comment($product, 'Отличный товар ..');
         Auth::user()->comment($product, 'Да, товар супер .. 2222');
         $product=Product::find(2);
         Auth::user()->comment($product, 'Отличный товар ..');
-        Auth::user()->comment($product, 'Да, товар супер .. 2222');
-        return response($product);
+        Auth::user()->comment($product, 'Да, товар супер .. 2222');*/
+        return response(Auth::user());
     }
 }

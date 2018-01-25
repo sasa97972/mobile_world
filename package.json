@@ -24,6 +24,7 @@
     "bootstrap": "^4.0.0-beta.3",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
-    "react-select": "latest"
+    "react-select": "latest",
+    "slick-carousel": "^1.8.1"
   }
 }

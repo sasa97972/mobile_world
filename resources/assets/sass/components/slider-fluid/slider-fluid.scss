@@ -1,0 +1,59 @@
+@import "../../variables";
+@import "../../mixins";
+@import "../../extends";
+
+.slider-fluid {
+  position: relative;
+  max-width: 100%;
+  .custom-prev,
+  .custom-next {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    font-size: 3em;
+    cursor: pointer;
+    transition: color .5s;
+  }
+  .custom-prev:hover,
+  .custom-next:hover {
+    color: $primary-text-color-light;
+  }
+  .custom-prev {
+    left: 1em;
+  }
+  .custom-next {
+    right: 1em;
+  }
+
+
+}
+
+.slider-fluid__content {
+  @extend %flex-col-nowrap;
+  @extend %horizontal-center;
+  height: 100vh;
+  min-height: 500px;
+
+  &.slider-fluid__content_one {
+    background: url(/images/slider-fluid/1.jpeg) no-repeat center center / cover;
+    background-attachment: fixed;
+  }
+  &.slider-fluid__content_two {
+    background: url(/images/slider-fluid/2.jpeg) no-repeat center center / cover;
+    background-attachment: fixed;
+  }
+  &.slider-fluid__content_three {
+    background: url(/images/slider-fluid/3.jpeg) no-repeat center center / cover;
+    background-attachment: fixed;
+  }
+}
+
+.slider-fluid__header {
+  color: #fff;
+}
+
+.slider-fluid__text {
+  color: #fff;
+}

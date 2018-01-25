@@ -16,7 +16,7 @@ class ViewComposersServiceProvider extends ServiceProvider
     {
         // Using class based composers...
         View::composer(
-            ['home'], 'App\Http\ViewComposers\HomeComposer'
+            ['home', 'auth.*'], 'App\Http\ViewComposers\HomeComposer'
         );
 
     }

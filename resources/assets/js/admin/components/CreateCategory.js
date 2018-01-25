@@ -9,13 +9,14 @@ class CreateCategory extends Component
         this.state = {
             name: "",
             description: "",
+            alias: "",
             button: false
         }
     }
 
     handleInput(event) {
         this.setState({[event.target.name]: event.target.value}, () => {
-            if(this.state.description && this.state.name) {
+            if(this.state.description && this.state.name && this.state.alias) {
                 this.setState({button: true});
             } else {
                 this.setState({button: false});
@@ -34,7 +35,8 @@ class CreateCategory extends Component
             },
             "data": {
                 name: this.state.name,
-                description: this.state.description
+                description: this.state.description,
+                alias: this.state.alias
             }
         };
 
@@ -89,6 +91,16 @@ class CreateCategory extends Component
                                     className="form-control"
                                     name="name"
                                     value={this.state.name}
+                                    onChange={(e) => {this.handleInput(e)}}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label>Алиас категории</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    name="alias"
+                                    value={this.state.alias}
                                     onChange={(e) => {this.handleInput(e)}}
                                 />
                             </div>
