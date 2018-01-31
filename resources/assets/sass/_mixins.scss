@@ -43,6 +43,18 @@
 }
 }
 
+@mixin gitchText($offset, $text) {
+  content: $text;
+  position: absolute;
+  left: $offset;
+  top: $offset;
+  clip: rect(0, 900px, 0, 0);
+  background-color: #000;
+  color: #fff;
+  animation: glitch 3s infinite alternate-reverse;
+  animation-delay: 4s;
+}
+
 // color tint and shade
 
 @function shade(
@@ -60,28 +72,30 @@
   @return mix(#fff, $color, $percent);
 }
 
+
+
 // breakpoints
 
 $XS:    0px;
-$S:     576px;
-$M:     768px;
-$L:     992px;
+$S:     575px;
+$M:     767px;
+$L:     991px;
 $XL:    1200px;
 
 // media queries
 
 @mixin MQ($canvas) {
   @if $canvas == XS {
-    @media only screen and (min-width: $XS) { @content; }
+    @media only screen and (max-width: $S) { @content; }
   }
   @else if $canvas == S {
-    @media only screen and (min-width: $S) { @content; }
+    @media only screen and (max-width: $M) { @content; }
   }
   @else if $canvas == M {
-    @media only screen and (min-width: $M) { @content; }
+    @media only screen and (max-width: $L) { @content; }
   }
   @else if $canvas == L {
-    @media only screen and (min-width: $L) { @content; }
+    @media only screen and (max-width: $XL) { @content; }
   }
   @else if $canvas == XL {
     @media only screen and (min-width: $XL) { @content; }

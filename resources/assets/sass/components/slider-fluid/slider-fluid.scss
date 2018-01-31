@@ -26,8 +26,30 @@
   .custom-next {
     right: 1em;
   }
+}
 
+@include MQ(XS) {
+  .slider-fluid {
+    .custom-prev,
+    .custom-next {
+      display: none !important;
+    }
+  }
+}
 
+@include MQ(S) {
+  .slider-fluid {
+    .custom-prev,
+    .custom-next {
+      font-size: 25px;
+    }
+    .custom-prev {
+      left: .3em;
+    }
+    .custom-next {
+      right: .3em;
+    }
+  }
 }
 
 .slider-fluid__content {
@@ -35,25 +57,70 @@
   @extend %horizontal-center;
   height: 100vh;
   min-height: 500px;
+  //background-attachment: fixed;
 
   &.slider-fluid__content_one {
-    background: url(/images/slider-fluid/1.jpeg) no-repeat center center / cover;
-    background-attachment: fixed;
+    background: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url(/images/slider-fluid/1.jpg) no-repeat center center / cover fixed;
   }
   &.slider-fluid__content_two {
-    background: url(/images/slider-fluid/2.jpeg) no-repeat center center / cover;
-    background-attachment: fixed;
+    background: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url(/images/slider-fluid/2.jpg) no-repeat center center / cover fixed;
   }
   &.slider-fluid__content_three {
-    background: url(/images/slider-fluid/3.jpeg) no-repeat center center / cover;
-    background-attachment: fixed;
+    background: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url(/images/slider-fluid/3.jpg) no-repeat center center / cover fixed;
+  }
+}
+
+@include MQ(S) {
+  .slider-fluid__content {
+    background-attachment: scroll !important;
+  }
+}
+
+.slider-fluid__text-content {
+  margin-left: 10rem;
+  max-width: 500px;
+  position: relative;
+
+  &:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -20px;
+    width: 3px;
+    background-color: $primary-text-color-light;
   }
 }
 
 .slider-fluid__header {
+  font-size: 3rem;
   color: #fff;
 }
 
 .slider-fluid__text {
+  font-size: 1.5rem;
   color: #fff;
+}
+
+@include MQ(S) {
+  .slider-fluid__text-content {
+    margin-left: 3.5rem;
+  }
+
+  .slider-fluid__header {
+    font-size: 2rem;
+    color: #fff;
+  }
+
+  .slider-fluid__text {
+    font-size: 1rem;
+    color: #fff;
+  }
+}
+
+@include MQ(XS) {
+  .slider-fluid__text-content {
+    margin-left: 1.5rem;
+  }
 }

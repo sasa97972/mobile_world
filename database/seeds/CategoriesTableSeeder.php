@@ -14,11 +14,12 @@ class CategoriesTableSeeder extends Seeder
     {
         $faker = \Faker\Factory::create();
 
-        for ($i = 0; $i < 15; $i++) {
+        for ($i = 0; $i < 10; $i++) {
             Category::create([
                 'name' => $faker->word,
                 'alias' => $faker->word,
                 'description' => $faker->paragraph,
+                'title_image' => "categories/1.jpg",
             ]);
         }
     }

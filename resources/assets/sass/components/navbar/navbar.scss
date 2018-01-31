@@ -2,6 +2,16 @@
 @import "../../mixins";
 @import "../../extends";
 
+//Navbar variables
+$nav-mobile-background: $primary-text-color-light;
+$nav-mobile-link-color: #fff;
+$nav-mobile-link-color-hover: $light-color;
+$nav-scroll-background: $primary-text-color-light;
+$nav-scroll-link-color: #fff;
+$nav-scroll-link-color-hover: $light-color;
+
+
+
 .cd-auto-hide-header {
   position: fixed;
   left: 0;
@@ -26,7 +36,7 @@
 }
 
 .nav__row {
-  border-bottom: 1px solid rgba(0,0,0,.12);
+  border-bottom: 1px solid rgba(255,255,255,.12);
 }
 
 .nav-link {
@@ -68,6 +78,12 @@
   }
 }
 
+@include MQ(L) {
+  .nav__item > .nav-link {
+    padding: 30px 0;
+  }
+}
+
 .nav__name {
   margin: 0 0 0 10px;
   font-size: 2rem;
@@ -76,6 +92,12 @@
               -1px 1px 1px silver;
   color: white;
   transition: text-shadow .5s;
+}
+
+@include MQ(M) {
+  .nav__name {
+    font-size: 1.3rem;
+  }
 }
 
 .nav__logo-img {
@@ -103,18 +125,44 @@
   }
 }
 
-.nav__nested-list {
-  display: none;
-  max-height: 300px;
-  overflow-y: scroll;
+.baron.baron__root {
   position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .5s;
+}
+
+.nav__item-open-nested:hover .baron.baron__root {
+  visibility: visible;
+  opacity: 1;
+}
+
+.baron__scroller {
+  background-color: #fff;
+}
+
+.nav__nested-list {
+  max-height: 300px;
+  margin: 0;
+  padding: 0 40px;
+  list-style: none;
+  color: $primary-text-color;
+
+  .nav-link {
+    color: inherit;
+  }
+
+  .nav-link:hover {
+    color: #BCEB3C;
+  }
 }
 
 .nav__menu {
-  @extend %flex-row-wrap;
+  display: flex;
+  flex-flow: row wrap;
   @extend %vertical-center;
-  @extend %horizontal-center;
-  color: $primary-text-color;
+  justify-content: center;
+  color: #fff;
 }
 
 .nav__list {
@@ -127,10 +175,11 @@
 }
 
 .nav__system {
-  @extend %flex-row-wrap;
+  display: flex;
+  flex-flow: row wrap;
   @extend %vertical-center;
   justify-content: flex-end;
-  color: $primary-text-color;
+  color: #fff;
 }
 
 .nav__system-list {
@@ -150,5 +199,143 @@
   font-size: 1.1rem;
   position: relative;
   top: 2px;
+  cursor: pointer;
+  transition: color .3s;
+
+  &:hover {
+    color: $primary-text-color;
+  }
 }
+
+.nav_scroll {
+  background-color: $nav-scroll-background;
+
+  .nav-link {
+    color: $nav-scroll-link-color;
+  }
+
+  .nav__system-cart:hover,
+  .nav-link:hover {
+    color: $nav-scroll-link-color-hover;
+  }
+
+  .baron__scroller {
+    background-color: $primary-text-color-light;
+  }
+}
+
+.hamburger__wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.hamburger__col {
+  display: none;
+}
+
+.hamburger {
+  outline: none !important;
+}
+
+.hamburger-box {
+  display: block;
+}
+
+@include MQ(M) {
+  .nav {
+    background: $nav-mobile-background;
+  }
+
+  .nav__row {
+    padding: 10px 0;
+    border-bottom: none;
+  }
+
+  .nav__system,
+  .nav__menu {
+    display: none;
+  }
+
+  .hamburger__col {
+    display: block;
+  }
+}
+
+.dropdown-item:focus, .dropdown-item:hover {
+  background-color: #eaecef;
+}
+
+.nav_mobile {
+  .nav-link:hover {
+    color: $light-color !important;
+  }
+
+  .nav__menu {
+    border-top: 1px solid #fff;
+    order: 2;
+  }
+
+  .nav__system {
+    border-top: 1px solid #fff;
+    order: 1;
+  }
+
+  .nav__item {
+    display: block;
+  }
+
+  .nav__system-list {
+    padding: 5px 0;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .nav__system-cart {
+    top: 6px;
+  }
+
+  .hamburger__wrapper {
+    margin-bottom: 10px;
+  }
+
+  .nav__item > .nav-link {
+    padding: 15px 0;
+  }
+
+  .baron.baron__root {
+    position: relative;
+    visibility: visible;
+    opacity: 1;
+    display: none;
+  }
+
+  .baron__scroller {
+    background-color: $primary-text-color-light;
+  }
+  
+  .nav__nested-item > .nav-link {
+    color: $nav-mobile-link-color;
+
+    &:hover {
+      color: $nav-mobile-link-color-hover;
+    }
+  }
+
+  .nav__system-cart:hover {
+    color: $nav-mobile-link-color-hover;
+  }
+}
+
+.fa-caret-down {
+  transition: transform .5s;
+}
+
+.caret_open {
+  transform: rotate(180deg);
+}
+
+
+
+
 

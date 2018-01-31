@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Site\Api;
 
 use App\Repositories\ProductRepositories;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Product;
+
 
 class ProductsController extends Controller
 {
@@ -14,6 +16,17 @@ class ProductsController extends Controller
     public function __construct(ProductRepositories $product)
     {
         $this->products = $product;
+    }
+
+    public function index(Request $request)
+    {
+        $sortBy = $request->get('sortBy') ? $request->get('sortBy') : 'id';
+        $sort = $request->get('sort') ? $request->get('sort') : 'asc';
+        $products = $this->products->getAllWithSort($sortBy, $sort);
+        foreach ($products as $product) {
+            $product->title_image = Storage::url($product->title_image);
+        }
+        return response($products);
     }
 
     /**

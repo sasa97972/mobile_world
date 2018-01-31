@@ -1,0 +1,9 @@
+.card-custom {
+  margin-bottom: 20px;
+}
+
+.custom-card__card > div {
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+}

@@ -1,0 +1,29 @@
+@import "../../variables";
+
+.counter__row {
+  padding: 6em 0 4em 0;
+}
+
+.counter__content {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+}
+
+.counter__icon {
+  font-size: 4em;
+}
+
+.counter__count {
+  text-align: center;
+  font-size: 3em;
+  color: $primary-text-color;
+  font-weight: normal;
+}
+
+.counter__text {
+  font-family: "Open Sans", serif;
+  font-weight: 300;
+  font-size: 1.3em;
+}
+

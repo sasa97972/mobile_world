@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Api;
 use App\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class CategoriesController extends Controller
 {
@@ -31,7 +32,15 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        $category = Category::create($request->all());
+        $category = new Category();
+        $category->name = $request->name;
+        $category->description = $request->description;
+        $category->alias = $request->alias;
+        if($request->file('image')) {
+            $path = $request->file('image')->store('categories', 'public');
+            $category->title_image = $path;
+        }
+        $category->save();
 
         return response()->json($category, 201);
     }
@@ -44,6 +53,7 @@ class CategoriesController extends Controller
      */
     public function show(Category $category)
     {
+        $category->title_image = Storage::url($category->title_image);
         return response($category);
     }
 
@@ -57,7 +67,20 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        $category->update($request->all());
+        $path = $category->title_image;
+        if($request->file('image')) {
+            if(Storage::exists($category->title_image && $category->title_image !== "public/1.jpg")) {
+                Storage::delete($category->title_image);
+            }
+            $path = $request->file('image')->store('categories', 'public');
+        }
+
+        $category->update([
+            "name" => $request->name,
+            "description" => $request->description,
+            "alias" => $request->alias,
+            "title_image" => $path
+        ]);
 
         return response()->json($category, 200);
     }
@@ -71,6 +94,9 @@ class CategoriesController extends Controller
      */
     public function destroy(Category $category)
     {
+        if(Storage::exists("public/".$category->title_image) && $category->title_image !== "categories/1.jpg") {
+            Storage::delete("public/".$category->title_image);
+        }
         $category->delete();
 
         return response()->json(null, 204);

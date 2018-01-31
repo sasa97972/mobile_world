@@ -10,21 +10,33 @@ class CreateCategory extends Component
             name: "",
             description: "",
             alias: "",
+            image: null,
+            imagePreviewUrl: "",
             button: false
-        }
+        };
+
+        this.checkValid = this.checkValid.bind(this);
     }
 
     handleInput(event) {
-        this.setState({[event.target.name]: event.target.value}, () => {
-            if(this.state.description && this.state.name && this.state.alias) {
-                this.setState({button: true});
-            } else {
-                this.setState({button: false});
-            }
-        })
+        this.setState({[event.target.name]: event.target.value}, this.checkValid())
+    }
+
+    checkValid() {
+        if(this.state.description && this.state.name && this.state.alias && this.state.image) {
+            this.setState({button: true});
+        } else {
+            this.setState({button: false});
+        }
     }
 
     saveData() {
+        const data = new FormData();
+        data.append("image", this.state.image);
+        data.append("name", this.state.name);
+        data.append("description", this.state.description);
+        data.append("alias", this.state.alias);
+
         let settings = {
             url: "/api/admin/categories",
             "async": true,
@@ -33,11 +45,7 @@ class CreateCategory extends Component
             "headers": {
                 token: this.props.token
             },
-            "data": {
-                name: this.state.name,
-                description: this.state.description,
-                alias: this.state.alias
-            }
+            "data": data
         };
 
         const success = axios(settings).then(response =>  {
@@ -66,6 +74,20 @@ class CreateCategory extends Component
         if(this.saveData()) {
             $("#successModal").modal('show');
         }
+    }
+
+    handleFileUpload(event) {
+        let reader = new FileReader();
+        let file = event.target.files[0];
+
+        reader.onloadend = () => {
+            this.setState({
+                image: file,
+                imagePreviewUrl: reader.result
+            }, this.checkValid());
+        };
+
+        reader.readAsDataURL(file)
     }
 
     render() {
@@ -113,6 +135,25 @@ class CreateCategory extends Component
                                     value={this.state.description}
                                     onChange={(e) => {this.handleInput(e)}}
                                 />
+                            </div>
+                            <div className="form-group">
+                                <label>Титульное изображение</label>
+                                <div className="custom-file">
+                                    <input
+                                        type="file"
+                                        className="custom-file-input"
+                                        name="title_image"
+                                        onChange={(e) => {this.handleFileUpload(e)}}
+                                    />
+                                    <label className="custom-file-label">
+                                        {this.state.image ? "Изображение добавлено!" : "Выберите изображение"}
+                                    </label>
+                                </div>
+                                {this.state.image &&
+                                <div className="preview-image-container">
+                                    <img src={this.state.imagePreviewUrl}/>
+                                </div>
+                                }
                             </div>
                             <button
                                 type="submit"

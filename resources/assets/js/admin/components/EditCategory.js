@@ -10,6 +10,8 @@ class EditCategory extends Component
             name: "",
             description: "",
             alias: "",
+            image: null,
+            imagePreviewUrl: "",
             button: true,
             load: true
         }
@@ -50,12 +52,22 @@ class EditCategory extends Component
                 name: data.name,
                 description: data.description,
                 alias: data.alias,
+                imagePreviewUrl: data.title_image,
                 load: false
             })
         });
     }
 
     saveData() {
+        const data = new FormData();
+        if(this.state.image) {
+            data.append("image", this.state.image);
+        }
+        data.append("name", this.state.name);
+        data.append("description", this.state.description);
+        data.append("alias", this.state.alias);
+        data.append("_method", "PUT");
+
         let settings = {
             url: `/api/admin/categories/${this.props.match.params.categoryId}`,
             "async": true,
@@ -64,11 +76,7 @@ class EditCategory extends Component
             "headers": {
                 token: this.props.token
             },
-            "data": {
-                name: this.state.name,
-                description: this.state.description,
-                alias: this.state.alias,
-            }
+            "data": data
         };
 
         const success = axios(settings).then(response =>  {
@@ -93,6 +101,20 @@ class EditCategory extends Component
         if(this.saveData()) {
             $("#successModal").modal('show');
         }
+    }
+
+    handleFileUpload(event) {
+        let reader = new FileReader();
+        let file = event.target.files[0];
+
+        reader.onloadend = () => {
+            this.setState({
+                image: file,
+                imagePreviewUrl: reader.result
+            });
+        };
+
+        reader.readAsDataURL(file)
     }
 
     render() {
@@ -157,6 +179,25 @@ class EditCategory extends Component
                                             value={this.state.description}
                                             onChange={(e) => {this.handleInput(e)}}
                                         />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>Титульное изображение</label>
+                                        <div className="custom-file">
+                                            <input
+                                                type="file"
+                                                className="custom-file-input"
+                                                name="title_image"
+                                                onChange={(e) => {this.handleFileUpload(e)}}
+                                            />
+                                            <label className="custom-file-label">
+                                                {this.state.image ? "Изображение добавлено!" : "Выберите изображение"}
+                                            </label>
+                                        </div>
+                                        {this.state.imagePreviewUrl &&
+                                        <div className="preview-image-container">
+                                            <img src={this.state.imagePreviewUrl}/>
+                                        </div>
+                                        }
                                     </div>
                                     <button
                                         type="submit"

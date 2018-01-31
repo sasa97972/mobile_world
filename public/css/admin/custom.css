@@ -112,6 +112,7 @@
 @media (max-width: 575.99px) {
     .sidebar {
         position: static;
+        margin-top: 54.38px;
     }
 
     .dash__menu-list {

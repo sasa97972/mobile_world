@@ -48,4 +48,22 @@ class ProductRepositories
             ->groupBy('products.id')
             ->paginate($perPage);
     }
+
+    /**
+     * Получить все товары с сортировкой
+     * @param $sortBy
+     * @param $sort
+     * @return \Illuminate\Database\Eloquent\Collection|\Illuminate\Support\Collection|static[]
+     */
+    public function getAllWithSort($sortBy, $sort)
+    {
+        return Product::with('category', 'phones')
+            ->select('products.*', 'phones.model', 'categories.name')
+            ->leftJoin('products_phones', 'products.id', '=', 'products_phones.product_id')
+            ->leftJoin('phones', 'products_phones.phone_id', '=', 'phones.id')
+            ->join('categories', 'products.category_id', '=', 'categories.id')
+            ->orderBy($sortBy, $sort)
+            ->groupBy('products.id')
+            ->get();
+    }
 }

@@ -1,0 +1,25 @@
+@import "../../variables";
+
+.points__row {
+  padding: 40px 0;
+}
+
+.points__item {
+  padding: 2em;
+  text-align: center;
+}
+
+.points__icon {
+  font-size: 3em;
+}
+
+.points__header {
+  margin: 0.5em;
+  color: $primary-text-color;
+  text-transform: uppercase;
+  font-weight: normal;
+}
+
+.points__text {
+  color: $text-color
+}

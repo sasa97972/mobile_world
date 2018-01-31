@@ -2,6 +2,7 @@
 
 namespace App\Http\ViewComposers;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use App\Category;
 
@@ -16,6 +17,10 @@ class HomeComposer
      */
     public function compose(View $view)
     {
-        $view->with('categories', Category::all());
+        $categories = Category::all();
+        foreach ($categories as $category) {
+            $category->title_image = Storage::url($category->title_image);
+        }
+        $view->with('categories', $categories);
     }
 }

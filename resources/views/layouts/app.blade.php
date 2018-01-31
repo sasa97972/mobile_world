@@ -28,6 +28,10 @@
         @yield('content')
     </main>
 
+    <div class="top"><i class="fa fa-angle-up" aria-hidden="true"></i></div>
+
+    @include('site._partials.footer')
+
 <!-- Scripts -->
 <script src="{{ asset('js/site/site.js') }}"></script>
 </body>

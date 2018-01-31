@@ -17,8 +17,8 @@ class ProductsServiceProvider extends ServiceProvider
     {
         Product::deleting(function ($product) {
             $path = $product->title_image;
-            if(Storage::exists($path)) {
-                Storage::delete($path);
+            if(Storage::exists("public/".$path)) {
+                Storage::delete("public/".$path);
             }
 
             $images = $product->images;
