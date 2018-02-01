@@ -49,7 +49,7 @@
   left: $offset;
   top: $offset;
   clip: rect(0, 900px, 0, 0);
-  background-color: #000;
+  background-color: rgba(0,0,0,.5);
   color: #fff;
   animation: glitch 3s infinite alternate-reverse;
   animation-delay: 4s;

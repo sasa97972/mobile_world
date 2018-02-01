@@ -20,9 +20,9 @@
             </div>
             <div class="col-md-12 col-lg-4 nav__menu">
                 <ul class="nav__list">
-                    <li class="nav__item"><a href={{url("/")}} class="nav-link <?php if(Request::path() === "home"){ ?>nav-link_active<?php } ?>">Главная</a></li>
+                    <li class="nav__item"><a href={{url("/")}} class="nav-link <?php if(Request::path() === "/"){ ?>nav-link_active<?php } ?>">Главная</a></li>
                     <li class="nav__item nav__item-open-nested">
-                        <a href={{url("/shop")}} class="nav-link <?php if(Request::path() === "shop/*"){ ?>nav-link_active<?php } ?>">Магазин <i class="fas fa-caret-down"></i></a>
+                        <a href={{url("/shop")}} class="nav-link <?php if(Request::path() === "shop"){ ?>nav-link_active<?php } ?>">Магазин <i class="fas fa-caret-down"></i></a>
 
                             <div class="baron baron__root baron__clipper _simple">
                                 <div class="baron__scroller">

@@ -72907,10 +72907,12 @@ var Shop = function (_Component) {
             sortBy: 'id',
             sort: 'asc',
             currentPage: 1,
-            perPage: 10
+            perPage: 10,
+            search: ""
         };
 
         _this.pagination = _this.pagination.bind(_this);
+        _this.productSearch = _this.productSearch.bind(_this);
         return _this;
     }
 
@@ -72937,9 +72939,14 @@ var Shop = function (_Component) {
             this.setState({ products: pageProducts });
         }
     }, {
+        key: 'productSearch',
+        value: function productSearch() {}
+    }, {
         key: 'render',
         value: function render() {
-            var products = this.state.products;
+            var _state2 = this.state,
+                products = _state2.products,
+                search = _state2.search;
 
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 __WEBPACK_IMPORTED_MODULE_3_material_ui_styles_MuiThemeProvider___default.a,
@@ -72949,7 +72956,9 @@ var Shop = function (_Component) {
                     null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_6__SideBar__["a" /* SideBar */], null),
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_7__Products__["a" /* Products */], {
-                        products: products
+                        products: products,
+                        search: search,
+                        productSearch: this.productSearch
                     })
                 )
             );
@@ -78896,17 +78905,18 @@ var SideBar = function SideBar(props) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_material_ui_Card___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_material_ui_Card__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_material_ui_RaisedButton__ = __webpack_require__(545);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_material_ui_RaisedButton___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_material_ui_RaisedButton__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Search__ = __webpack_require__(574);
+
+
 
 
 
 
 var Products = function Products(props) {
-    var products = props.products;
+    var products = props.products,
+        search = props.search,
+        productSearch = props.productSearch;
 
-
-    var cardStyle = {
-        height: "100%"
-    };
 
     return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'main',
@@ -78914,36 +78924,59 @@ var Products = function Products(props) {
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
             'div',
             { className: 'row' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                'div',
+                { className: 'col-md-12' },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__Search__["a" /* Search */], { productSearch: productSearch })
+            )
+        ),
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            'div',
+            { className: 'row' },
             products && products.map(function (product) {
-                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                    'div',
-                    { className: 'col-md-6 col-xl-4 card-custom', key: product.id },
-                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        __WEBPACK_IMPORTED_MODULE_1_material_ui_Card__["Card"],
-                        { style: cardStyle, className: 'custom-card__card' },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_material_ui_Card__["CardMedia"],
-                            null,
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: product.title_image, alt: '\u041F\u0440\u043E\u0434\u0443\u043A\u0446\u0438\u044F' })
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_material_ui_Card__["CardTitle"], { title: product.title, subtitle: '\u0426\u0435\u043D\u0430: ' + product.price + ' \u0413\u0440\u043D' }),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_material_ui_Card__["CardText"],
-                            null,
-                            product.description
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            __WEBPACK_IMPORTED_MODULE_1_material_ui_Card__["CardActions"],
-                            { style: { marginTop: "auto" } },
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_material_ui_RaisedButton___default.a, {
-                                href: '/shop/product/' + product.id,
-                                label: '\u041F\u043E\u0434\u0440\u043E\u0431\u043D\u0435\u0435',
-                                primary: true }),
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_material_ui_RaisedButton___default.a, { label: '\u0412 \u043A\u043E\u0440\u0437\u0438\u043D\u0443', secondary: true })
-                        )
-                    )
-                );
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(ProductCard, {
+                    key: product.id,
+                    product: product
+                });
             })
+        )
+    );
+};
+
+var ProductCard = function ProductCard(props) {
+    var product = props.product;
+
+
+    var cardStyle = {
+        height: "100%"
+    };
+
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'div',
+        { className: 'col-md-6 col-xl-4 card-custom' },
+        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+            __WEBPACK_IMPORTED_MODULE_1_material_ui_Card__["Card"],
+            { style: cardStyle, className: 'custom-card__card' },
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_1_material_ui_Card__["CardMedia"],
+                null,
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('img', { src: product.title_image, alt: '\u041F\u0440\u043E\u0434\u0443\u043A\u0446\u0438\u044F' })
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_1_material_ui_Card__["CardTitle"], { title: product.title, subtitle: '\u0426\u0435\u043D\u0430: ' + product.price + ' \u0413\u0440\u043D' }),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_1_material_ui_Card__["CardText"],
+                null,
+                product.description
+            ),
+            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                __WEBPACK_IMPORTED_MODULE_1_material_ui_Card__["CardActions"],
+                { style: { marginTop: "auto" } },
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_material_ui_RaisedButton___default.a, {
+                    href: '/shop/product/' + product.id,
+                    label: '\u041F\u043E\u0434\u0440\u043E\u0431\u043D\u0435\u0435',
+                    primary: true }),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2_material_ui_RaisedButton___default.a, { label: '\u0412 \u043A\u043E\u0440\u0437\u0438\u043D\u0443', secondary: true })
+            )
         )
     );
 };
@@ -83639,6 +83672,51 @@ RaisedButton.propTypes =  true ? {
   style: _propTypes2.default.object
 } : {};
 exports.default = RaisedButton;
+
+/***/ }),
+/* 547 */,
+/* 548 */,
+/* 549 */,
+/* 550 */,
+/* 551 */,
+/* 552 */,
+/* 553 */,
+/* 554 */,
+/* 555 */,
+/* 556 */,
+/* 557 */,
+/* 558 */,
+/* 559 */,
+/* 560 */,
+/* 561 */,
+/* 562 */,
+/* 563 */,
+/* 564 */,
+/* 565 */,
+/* 566 */,
+/* 567 */,
+/* 568 */,
+/* 569 */,
+/* 570 */,
+/* 571 */,
+/* 572 */,
+/* 573 */,
+/* 574 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Search; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_react___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_react__);
+
+
+var Search = function Search(props) {
+    return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+        'p',
+        null,
+        'Test'
+    );
+};
 
 /***/ })
 /******/ ]);

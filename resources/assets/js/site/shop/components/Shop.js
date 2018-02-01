@@ -20,9 +20,11 @@ class Shop extends Component
             sort: 'asc',
             currentPage: 1,
             perPage: 10,
+            search: ""
         };
 
         this.pagination = this.pagination.bind(this);
+        this.productSearch = this.productSearch.bind(this);
     }
 
     componentDidMount() {
@@ -40,14 +42,20 @@ class Shop extends Component
         this.setState({products: pageProducts});
     }
 
+    productSearch() {
+
+    }
+
     render() {
-        const {products} = this.state;
+        const {products, search} = this.state;
         return(
             <MuiThemeProvider>
                 <Layout>
                     <SideBar/>
                     <Products
                         products={products}
+                        search={search}
+                        productSearch={this.productSearch}
                     />
                 </Layout>
             </MuiThemeProvider>
