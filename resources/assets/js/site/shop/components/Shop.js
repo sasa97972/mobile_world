@@ -20,10 +20,12 @@ class Shop extends Component
             sort: 'asc',
             currentPage: 1,
             perPage: 10,
+            pages: null,
             search: ""
         };
 
         this.pagination = this.pagination.bind(this);
+        this.changePage = this.changePage.bind(this);
         this.productSearch = this.productSearch.bind(this);
     }
 
@@ -38,16 +40,32 @@ class Shop extends Component
 
     pagination(products) {
         const {currentPage, perPage} = this.state;
-        let pageProducts = products.splice((currentPage-1)*perPage, perPage);
-        this.setState({products: pageProducts});
+        let newProducts = products.slice(),
+            pageProducts = newProducts.slice((currentPage-1)*perPage, currentPage*perPage),
+            pages = Math.ceil(newProducts.length/perPage);
+        this.setState({products: pageProducts, pages: pages});
     }
 
-    productSearch() {
+    productSearch(event) {
+        const searchText = event.target.value;
+        const {products} = this.props;
+        this.setState({search: searchText, currentPage: 1}, () => {
+            this.pagination(products.filter((product) => {
+                return product.title.search(searchText) !== -1;
+            }));
+        });
+    }
 
+    changePage(page) {
+        const {products} = this.props;
+        this.setState({currentPage: page}, () => {
+            this.pagination(products);
+        });
+        $("body, html").animate({scrollTop: $(".products").offset().top}, 1000);
     }
 
     render() {
-        const {products, search} = this.state;
+        const {products, search, pages, currentPage} = this.state;
         return(
             <MuiThemeProvider>
                 <Layout>
@@ -56,6 +74,9 @@ class Shop extends Component
                         products={products}
                         search={search}
                         productSearch={this.productSearch}
+                        pages={pages}
+                        currentPage={currentPage}
+                        changePage={this.changePage}
                     />
                 </Layout>
             </MuiThemeProvider>

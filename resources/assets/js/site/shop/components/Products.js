@@ -3,16 +3,18 @@ import {Card, CardActions, CardMedia, CardTitle, CardText} from 'material-ui/Car
 import RaisedButton from 'material-ui/RaisedButton';
 
 import {Search} from './Search';
+import {Pagination} from './Pagination';
 
 export const Products = (props) => {
-    const {products, search, productSearch} = props;
+    const {products, search, productSearch, currentPage, pages, changePage} = props;
 
     return(
-        <main className="col-md-9">
+        <main className="col-md-9 products">
             <div className="row">
-                <div className="col-md-12">
-                    <Search productSearch={productSearch}  />
-                </div>
+                <Search
+                    productSearch={productSearch}
+                    search={search}
+                />
             </div>
             <div className="row">
                 {products && products.map((product) => (
@@ -22,6 +24,11 @@ export const Products = (props) => {
                     />
                 ))}
             </div>
+            <Pagination
+                pages={pages}
+                currentPage={currentPage}
+                changePage={changePage}
+            />
         </main>
     );
 };

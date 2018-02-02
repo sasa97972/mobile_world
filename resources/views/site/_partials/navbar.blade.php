@@ -80,10 +80,10 @@
                                 </form>
                             </div>
                         </li>
-                        <li class="nav__system-list-item">
-                            <i class="fas fa-shopping-cart nav__system-cart"></i>
-                        </li>
                     @endif
+                    <li class="nav__system-list-item">
+                        <i class="fas fa-shopping-cart nav__system-cart"></i>
+                    </li>
                 </ul>
             </div>
         </div>
