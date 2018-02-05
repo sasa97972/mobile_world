@@ -7,6 +7,6 @@ export const getProducts = (params) => dispatch => {
     };
 
     axios(settings).then(response => {
-        dispatch({type: "FETCH_GALLERIES_SUCCESS", payload: response.data})
+        dispatch({type: "FETCH_PRODUCTS_SUCCESS", payload: response.data})
     });
 };

@@ -16,8 +16,8 @@ class PhonesTableSeeder extends Seeder
 
         for ($i = 0; $i < 15; $i++) {
             Phone::create([
-                'name' => $faker->word,
-                'model' => $faker->word,
+                'name' => ucfirst($faker->word),
+                'model' => ucfirst($faker->unique()->word),
             ]);
         }
     }

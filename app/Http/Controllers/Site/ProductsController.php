@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Site;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Product;
 use App\Comment;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
-class ProductController extends Controller
+class ProductsController extends Controller
 {
     public function show($id)
     {
@@ -28,6 +30,10 @@ class ProductController extends Controller
         $product=Product::find(2);
         Auth::user()->comment($product, 'Отличный товар ..');
         Auth::user()->comment($product, 'Да, товар супер .. 2222');*/
-        return response(Auth::user());
+        $product = Product::with('category', 'phones', 'images')->find($id);
+        foreach($product->images as $image) {
+            $image->path = Storage::url($image->path);
+        }
+        return view("site.product", ["product" => $product]);
     }
 }

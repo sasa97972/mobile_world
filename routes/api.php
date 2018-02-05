@@ -25,6 +25,7 @@ Route::group(['namespace' => 'Site\Api'], function () {
     Route::get('comments/search/{word?}', 'CommentsController@search')->name('api.comments.search');
     Route::get('users/search/{word?}', 'UsersController@search')->name('api.users.search');
     Route::get('products', 'ProductsController@index')->name('api.products');
+    Route::get('filter', 'FilterController@index')->name('api.filter');
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => 'api.token', 'namespace' => 'Admin\Api'], function () {

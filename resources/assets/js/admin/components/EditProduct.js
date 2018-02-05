@@ -121,7 +121,7 @@ class EditProduct extends Component
 
     handleMoreImages() {
         $("#successModal").modal('hide');
-        this.props.history.push(`/admin/product/images/${this.state.product_id}`);
+        this.props.history.push(`/admin/images/${this.state.product_id}`);
     }
 
     handleChangeSelect(event) {

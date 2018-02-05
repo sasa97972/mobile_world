@@ -2,13 +2,14 @@
 @import "../../variables";
 
 .hero {
-  padding: 150px 0;
+  padding: 200px 0;
   margin-bottom: 50px;
   background: linear-gradient(to right, rgba(0,0,0,.5), rgba(0,0,0,.3)), url(/images/hero/1.jpg) no-repeat center center / cover fixed;
 }
 
-@include MQ(S) {
+@include MQ(M) {
   .hero {
+    padding: 150px 0;
     background-attachment: scroll !important;
   }
 }

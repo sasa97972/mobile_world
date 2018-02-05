@@ -4,9 +4,22 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import {Search} from './Search';
 import {Pagination} from './Pagination';
+import {SortBar} from './SortBar';
 
 export const Products = (props) => {
-    const {products, search, productSearch, currentPage, pages, changePage} = props;
+    const {
+        products,
+        search,
+        productSearch,
+        currentPage,
+        pages,
+        changePage,
+        changeSort,
+        changeSortBy,
+        sortBy,
+        sort,
+        changePerPage,
+        perPage} = props;
 
     return(
         <main className="col-md-9 products">
@@ -14,6 +27,16 @@ export const Products = (props) => {
                 <Search
                     productSearch={productSearch}
                     search={search}
+                />
+            </div>
+            <div className="row">
+                <SortBar
+                    changeSort={changeSort}
+                    sort={sort}
+                    changeSortBy={changeSortBy}
+                    sortBy={sortBy}
+                    perPage={perPage}
+                    changePerPage={changePerPage}
                 />
             </div>
             <div className="row">
