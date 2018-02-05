@@ -12986,6 +12986,15 @@ a.text-dark:hover {
   padding: 20px 40px;
 }
 
+.product__slider-item {
+  max-width: 100%;
+  display: block;
+}
+
+.product__slider-item-container {
+  margin: 10px;
+}
+
 a:hover {
   text-decoration: none !important;
 }

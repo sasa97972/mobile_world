@@ -9,6 +9,7 @@ require('./site/slider-fluid/slider-fluid');
 require('./site/buttons/top');
 require('./site/counter/counter');
 require('./site/testimonials/testimonials');
+require('./site/product-slider/product-slider');
 
 //Shop
 require('./site/shop/Main');

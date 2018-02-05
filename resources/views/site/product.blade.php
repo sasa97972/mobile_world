@@ -10,9 +10,30 @@
         </div>
     </div>
 
-    @foreach($product->images as $image)
-        <img src={{$image->path}} alt="Test"/>
-    @endforeach
+    <div class="container product">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="product__slider">
+                    <div class="slider-for">
+                        @foreach($product->images as $image)
+                            <div class="product__slider-item-container">
+                                <img class="product__slider-item" src={{$image->path}} alt={{$product->title}} />
+                            </div>
+                        @endforeach
+                    </div>
+                    <div class="slider-nav">
+                        @foreach($product->images as $image)
+                            <div class="product__slider-item-container">
+                                <img class="product__slider-item" src={{$image->path}} alt={{$product->title}} />
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
     <div id="shop-root"></div>
 
