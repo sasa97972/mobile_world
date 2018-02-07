@@ -13,9 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+/*Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
-});
+});*/
 
 
 Route::group(['namespace' => 'Site\Api'], function () {
@@ -25,6 +25,7 @@ Route::group(['namespace' => 'Site\Api'], function () {
     Route::get('comments/search/{word?}', 'CommentsController@search')->name('api.comments.search');
     Route::get('users/search/{word?}', 'UsersController@search')->name('api.users.search');
     Route::get('products', 'ProductsController@index')->name('api.products');
+    Route::get('product/{id}', 'ProductsController@show')->name('api.products');
     Route::get('filter', 'FilterController@index')->name('api.filter');
 });
 

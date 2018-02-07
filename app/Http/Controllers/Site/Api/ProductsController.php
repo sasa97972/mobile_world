@@ -41,4 +41,14 @@ class ProductsController extends Controller
         $sort = $request->get('sort');
         return response($this->products->search($word, $perPage, $sortBy, $sort));
     }
+
+    public function show($id)
+    {
+        $product = Product::with('category', 'phones', 'images')->find($id);
+        $product->title_image = Storage::url($product->title_image);
+        foreach($product->images as $image) {
+            $image->path = Storage::url($image->path);
+        }
+        return response(["product" => $product, "comments" => $product->commentsTree()]);
+    }
 }

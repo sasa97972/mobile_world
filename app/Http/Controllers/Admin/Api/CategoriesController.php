@@ -82,7 +82,7 @@ class CategoriesController extends Controller
             "title_image" => $path
         ]);
 
-        return response()->json($category, 200);
+        return response($request->json($category, 200));
     }
 
     /**

@@ -78,7 +78,7 @@ const ProductCard = (props) => {
                         href={`/shop/product/${product.id}`}
                         label="Подробнее"
                         primary={true} />
-                    <RaisedButton label="В корзину" secondary={true} />
+                    <RaisedButton label="Купить" secondary={true} />
                 </CardActions>
             </Card>
         </div>

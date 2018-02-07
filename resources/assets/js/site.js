@@ -2,6 +2,7 @@
 require('./bootstrap.js');
 require('slick-carousel');
 require('./libs/baron.min');
+require('magnific-popup');
 
 //partials
 require('./site/navbar/navbar');

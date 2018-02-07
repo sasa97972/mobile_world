@@ -8,6 +8,7 @@ import thunk from "redux-thunk"
 import reducers from './reducers';
 
 import Shop from './components/Shop';
+import Product from './components/Product';
 
 const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)));
 
@@ -22,9 +23,14 @@ class App extends Component
         return(
             <Provider store={store}>
                 <Router>
+                    <div>
                         <Route path="/shop" exact render={(props) => (
                             <Shop {...props} />
                         )}/>
+                        <Route path="/shop/product/:productId" exact render={(props) => (
+                            <Product {...props} />
+                        )}/>
+                    </div>
                 </Router>
             </Provider>
         )

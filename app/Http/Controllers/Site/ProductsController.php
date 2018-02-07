@@ -31,6 +31,7 @@ class ProductsController extends Controller
         Auth::user()->comment($product, 'Отличный товар ..');
         Auth::user()->comment($product, 'Да, товар супер .. 2222');*/
         $product = Product::with('category', 'phones', 'images')->find($id);
+        $product->title_image = Storage::url($product->title_image);
         foreach($product->images as $image) {
             $image->path = Storage::url($image->path);
         }

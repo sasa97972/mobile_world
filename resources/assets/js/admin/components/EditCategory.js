@@ -14,7 +14,9 @@ class EditCategory extends Component
             imagePreviewUrl: "",
             button: true,
             load: true
-        }
+        };
+
+        this.handleInput = this.handleInput.bind(this);
     }
 
     handleInput(event) {
@@ -62,6 +64,7 @@ class EditCategory extends Component
         const data = new FormData();
         if(this.state.image) {
             data.append("image", this.state.image);
+            console.log(this.state.name);
         }
         data.append("name", this.state.name);
         data.append("description", this.state.description);
@@ -72,7 +75,7 @@ class EditCategory extends Component
             url: `/api/admin/categories/${this.props.match.params.categoryId}`,
             "async": true,
             "crossDomain": true,
-            "method": "PUT",
+            "method": "POST",
             "headers": {
                 token: this.props.token
             },
@@ -80,9 +83,7 @@ class EditCategory extends Component
         };
 
         const success = axios(settings).then(response =>  {
-            if(response.statusText === "Created") {
-                return true;
-            }
+            response.statusText === "Updated"
         });
 
         return !!success;

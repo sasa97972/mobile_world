@@ -1,9 +1,52 @@
+@import "../../variables";
+
 .product__slider-item {
-  //margin: 0 10px;
-  max-width: 100%;
+  width: 100%;
   display: block;
 }
 
 .product__slider-item-container {
-  margin: 10px;
+
+}
+
+.slider-nav {
+  .custom-prev,
+  .custom-next {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.3em;
+    cursor: pointer;
+    color: $primary-text-color;
+    transition: color .5s;
+  }
+
+  .custom-prev:hover,
+  .custom-next:hover {
+    color: $primary-text-color-light;
+  }
+
+  .custom-prev {
+    left: -1em;
+  }
+
+  .custom-next {
+    right: -1em;
+  }
+
+  .slick-slide {
+    transform: scale(.7);
+    transition: transform .5s;
+  }
+}
+
+#slider-nav {
+  .slick-center {
+    transform: scale(1);
+  }
+}
+
+.slider-for {
+  margin-bottom: 20px;
 }
