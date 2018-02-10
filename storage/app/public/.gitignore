@@ -1,6 +1,4 @@
 *
+!categories/
+!products/
 !.gitignore
-!./categories/1.jpg
-!./products/1.jpg
-!./products/2.jpg
-!./products/3.jpg
