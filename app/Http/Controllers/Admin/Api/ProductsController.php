@@ -116,7 +116,10 @@ class ProductsController extends Controller
     {
         $path = $product->title_image;
         if($request->file('image')) {
-            if(Storage::exists("public/".$product->title_image)) {
+            if(Storage::exists("public/".$product->title_image
+                && !$product->title_image === "products/1.jpg"
+                && !$product->title_image == "products/2.jpg"
+                && !$product->title_image == "products/3.jpg")) {
                 Storage::delete("public/".$product->title_image);
             }
             $path = $request->file('image')->store('products', 'public');
