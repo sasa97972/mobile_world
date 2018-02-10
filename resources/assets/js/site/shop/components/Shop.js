@@ -42,6 +42,7 @@ class Shop extends Component
         this.applyFilter = this.applyFilter.bind(this);
         this.checkPhones = this.checkPhones.bind(this);
         this.changePrice = this.changePrice.bind(this);
+        this.applyCategory = this.applyCategory.bind(this);
     }
 
     componentDidMount() {
@@ -51,7 +52,8 @@ class Shop extends Component
     }
 
     componentWillReceiveProps(nextProps) {
-        this.pagination(this.getProducts(nextProps.products.slice()));
+        //this.pagination(this.getProducts(nextProps.products.slice()));
+        this.applyFilter(nextProps.products.slice());
     }
 
     pagination(products) {
@@ -65,7 +67,7 @@ class Shop extends Component
     productSearch(event) {
         const searchText = event.target.value;
         this.setState({search: searchText, currentPage: 1, isSearch: !!searchText}, () => {
-            this.pagination(this.getProducts());
+            this.applyFilter();
         });
     }
 
@@ -146,6 +148,7 @@ class Shop extends Component
             categories: filterData.categories.map((category) => ({
                             name: category.name,
                             check: false,
+                            alias: category.alias
                         }))
         });
         filter.push({
@@ -173,12 +176,24 @@ class Shop extends Component
             }
         });
 
-        this.setState({filter: filter, phones: phones, price: {max: filterData.price.max, min:filterData.price.min}});
+        this.setState({filter: filter, phones: phones, price: {max: filterData.price.max, min:filterData.price.min}}, () => {
+            if(this.props.match.params.category) {
+                this.applyCategory(this.props.match.params.category);
+            }
+        });
     };
 
-    applyFilter() {
-        const products = this.getProducts(),
-              filter   = this.state.filter;
+    applyCategory(categoryName) {
+        let filter = this.state.filter.slice();
+        let category = filter[0].categories.find(category => {console.log(category.name, categoryName); return(category.alias.toLowerCase() === categoryName.toLowerCase())});
+        category.check = true;
+        this.setState({filter: filter}, () => {
+            this.applyFilter();
+        })
+    }
+
+    applyFilter(products = this.getProducts()) {
+        const filter   = this.state.filter;
 
         let filteredProducts = [];
         let productForFilter = [];

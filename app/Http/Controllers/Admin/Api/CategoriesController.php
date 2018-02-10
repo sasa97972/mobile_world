@@ -32,6 +32,13 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'name' => 'required|unique:categories|max:255',
+            'description' => 'required',
+            'alias' => 'required|max:255',
+            'image' => 'mimes:jpeg,bmp,png'
+        ]);
+
         $category = new Category();
         $category->name = $request->name;
         $category->description = $request->description;

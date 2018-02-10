@@ -32,9 +32,9 @@ class CategoriesController extends Controller
      */
     public function search($word = "", Request $request)
     {
-        $perPage = $request->get('perPage');
-        $sortBy = $request->get('sortBy');
-        $sort = $request->get('sort');
+        $perPage = $request->get('perPage', 10);
+        $sortBy = $request->get('sortBy', "created_at");
+        $sort = $request->get('sort', "asc");
         return(response(Category::where('name', 'like', "%$word%")->orderBy($sortBy, $sort)->paginate($perPage)));
     }
 

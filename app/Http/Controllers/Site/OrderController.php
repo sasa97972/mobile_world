@@ -39,7 +39,7 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $order = new Order();
-
+        //add validation
         $order->phone_number = $request->phone_number;
         $order->user_id = Auth::user()->id;
         $order->save();

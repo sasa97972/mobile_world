@@ -142,7 +142,7 @@ class App extends Component
                             complete={complete}
                             button={button}
                         />
-                        <Route path="/shop" exact render={(props) => (
+                        <Route path="/shop/:category?" exact render={(props) => (
                             <Shop {...props} addProduct={this.addProduct}  />
                         )}/>
                         <Route path="/shop/product/:productId" exact render={(props) => (

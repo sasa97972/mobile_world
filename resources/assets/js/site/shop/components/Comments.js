@@ -120,8 +120,7 @@ export const Comments = (props) => {
                         </div>
                     :
                         <p style={{marginTop: "20px"}}>
-                            <a href="/login">Авторизируйтесь</a> или
-                            <a href="/register">зарегистрируйтесь</a>,
+                            <a href="/login">Авторизируйтесь</a> или <a href="/register">зарегистрируйтесь</a>,
                             чтобы оставлять комментарии
                         </p>}
                 </Paper>

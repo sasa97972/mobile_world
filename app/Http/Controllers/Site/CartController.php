@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Site;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Product;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 
 class CartController extends Controller
@@ -18,7 +19,8 @@ class CartController extends Controller
     public function index(Request $request)
     {
         if(!$request->session()->get('cart')) {
-            return response([]);
+
+            return response([]); //todo return response()->json([], Response::HTTP_NOT_FOUND;)
         }
         $products = Product::find($request->session()->get('cart'));
         foreach ($products as $product) {
@@ -48,7 +50,7 @@ class CartController extends Controller
         //$request->session()->flush();
         if($request->session()->has('cart')) {
             $id = array_search($request->product_id, $request->session()->get('cart'));
-            if(!$id && $id !== 0) {
+            if($id !== 0) {
                 $request->session()->push('cart', $request->product_id);
             }
         } else {
@@ -101,7 +103,7 @@ class CartController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $index = array_search($id, $request->session()->get('cart'));
+        $index = array_search($id, $request->session()->get('cart')); //IF not index ?
         $cart = $request->session()->get('cart');
         unset($cart[$index]);
         $request->session()->put('cart', $cart);

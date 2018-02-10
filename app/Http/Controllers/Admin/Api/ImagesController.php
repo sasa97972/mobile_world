@@ -19,7 +19,7 @@ class ImagesController extends Controller
     {
         $images = Image::where("product_id", $request->get('product_id'))->get();
 
-        foreach ($images as $image) {
+        foreach ($images as &$image) { ///!!!!!!!!!!!!!!!!!
             $image['path'] = Storage::url($image['path']);
         }
 
@@ -43,7 +43,7 @@ class ImagesController extends Controller
             $image->save();
         }
 
-        return response()->json($image, 201);
+        return response()->json($image, 201); //response::HTTP_ACCEPTED
     }
 
     /**

@@ -94,7 +94,7 @@ class ProductsController extends Controller
      */
     public function edit($id)
     {
-        $product = Product::with('category', 'phones')->find($id);
+        $product = Product::with('category', 'phones')->findOrFail($id);
         if($product->title_image) {
             $product->title_image = Storage::url($product->title_image);
         }

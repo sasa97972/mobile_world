@@ -31,6 +31,7 @@ class PhonesController extends Controller
      */
     public function store(Request $request)
     {
+        //$this->validate($request, []);
         $phone = Phone::create($request->all());
 
         return response()->json($phone, 201);

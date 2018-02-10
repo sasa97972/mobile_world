@@ -15,7 +15,7 @@ class UsersController extends Controller
      * @param string $word
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function search($word = "", Request $request)
+    public function search($word = "", Request $request) //change params order
     {
         $perPage = $request->get('perPage');
         $sortBy = $request->get('sortBy');

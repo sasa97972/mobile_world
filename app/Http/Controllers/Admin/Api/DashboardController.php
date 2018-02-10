@@ -18,7 +18,7 @@ class DashboardController extends Controller
             [
                 "info" => [
                     [
-                        "name" => "Продукты",
+                        "name" => "Продукты", //response messages to trans ()
                         "count" => Product::all()->count()
                     ],
                     [
