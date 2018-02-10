@@ -46,8 +46,7 @@ class App extends Component
         };
 
         const success = axios(settings).then(response =>  {
-            this.getProducts();
-            $(".cart__modal").fadeIn(500);
+            this.getProducts(true);
         });
     }
 
@@ -64,7 +63,7 @@ class App extends Component
         });
     }
 
-    getProducts() {
+    getProducts(openModal = false) {
         let settings = {
             url: "/cart",
             "async": true,
@@ -73,7 +72,9 @@ class App extends Component
         };
 
         const success = axios(settings).then(response =>  {
-            this.setState({products: response.data});
+            this.setState({products: response.data}, () => {
+                openModal && $(".cart__modal").fadeIn(500);
+            });
         });
     }
 

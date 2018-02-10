@@ -107,4 +107,6 @@
     </div>
 </section>
 
+<div id="shop-root"></div>
+
 @endsection

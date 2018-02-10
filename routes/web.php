@@ -13,7 +13,7 @@
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
-Route::get('/shop/{category}', 'Site\ShopController@index')->name('shop');
+Route::get('/shop/{category?}', 'Site\ShopController@index')->name('shop');
 Route::get('/shop/product/{product}', 'Site\ProductsController@show');
 Route::get('/user', 'Site\Api\UsersController@user');
 Route::resource("comments", 'Site\CommentsController');

@@ -46,8 +46,8 @@
 
 
                     </li>
-                    <li class="nav__item"><a href={{url("/about")}} class="nav-link <?php if(Request::path() === "about"){ ?>nav-link_active<?php } ?>">О нас</a></li>
-                    <li class="nav__item"><a href={{url("/contacts")}} class="nav-link <?php if(Request::path() === "contacts"){ ?>nav-link_active<?php } ?>">Контакты</a></li>
+                    <li class="nav__item"><a href="#" class="nav-link <?php if(Request::path() === "about"){ ?>nav-link_active<?php } ?>">О нас</a></li>
+                    <li class="nav__item"><a href="#" class="nav-link <?php if(Request::path() === "contacts"){ ?>nav-link_active<?php } ?>">Контакты</a></li>
                 </ul>
             </div>
             <div class="col-md-12 col-lg-4 nav__system">
