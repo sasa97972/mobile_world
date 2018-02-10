@@ -26,10 +26,10 @@ class ProductsController extends Controller
         //$comments = Comment::get()->toTree();
         /*$product=Product::find(1);
         Auth::user()->comment($product, 'Отличный товар ..');
-        Auth::user()->comment($product, 'Да, товар супер .. 2222');
-        $product=Product::find(2);
-        Auth::user()->comment($product, 'Отличный товар ..');
-        Auth::user()->comment($product, 'Да, товар супер .. 2222');*/
+        Auth::user()->comment($product, 'Да, товар супер .. 2222', 1);
+        Auth::user()->comment($product, 'Согласен ..');
+        Auth::user()->comment($product, 'Да, товар супер .. 2222', 3);*/
+
         $product = Product::with('category', 'phones', 'images')->find($id);
         $product->title_image = Storage::url($product->title_image);
         foreach($product->images as $image) {

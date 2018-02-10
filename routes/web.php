@@ -16,7 +16,10 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::get('/shop', 'Site\ShopController@index')->name('shop');
 Route::get('/shop/product/{product}', 'Site\ProductsController@show');
 Route::get('/user', 'Site\Api\UsersController@user');
-//Route::resource('products', 'Site\ProductsController');
+Route::resource("comments", 'Site\CommentsController');
+Route::resource('cart', 'Site\CartController');
+Route::resource('order', 'Site\OrderController');
+
 
 Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'namespace' => 'Admin'], function () {
     Route::get('/', 'DashboardController@index')->name('admin');

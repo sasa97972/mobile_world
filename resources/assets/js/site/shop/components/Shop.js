@@ -202,11 +202,11 @@ class Shop extends Component
                             if(Array.isArray(product[filter.filterName])) {
                                 product[filter.filterName].map((phone) => {
                                     if((phone[filter.filterSearch] === item[filter.filterSearch]) && item.check) {
-                                        filteredProducts.push(arr.slice(index, index+1)[0]);
+                                        filteredProducts.push(arr.splice(index, 1, {})[0]);
                                     }
                                 })
                             } else if ((item[filter.filterSearch] === product[filter.filterSearch]) && item.check) {
-                                filteredProducts.push(arr.slice(index, index+1)[0]);
+                                filteredProducts.push(arr.splice(index, 1, {})[0]);
                             }
                         })
                     }
@@ -229,6 +229,7 @@ class Shop extends Component
     render() {
         const {products, search, pages, currentPage, sortBy, sort,
             perPage, filter, phones, phones_selected, price} = this.state;
+        const {addProduct} = this.props;
         return(
             <MuiThemeProvider>
                 <Layout>
@@ -254,6 +255,7 @@ class Shop extends Component
                         sort={sort}
                         changePerPage={this.changePerPage}
                         perPage={perPage}
+                        addProduct={addProduct}
                     />
                 </Layout>
             </MuiThemeProvider>

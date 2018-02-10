@@ -22,7 +22,7 @@ trait Commentable
      */
     public function commentsTree()
     {
-        $comments = Comment::where("commentable_id", $this->id)->get()->toTree();
+        $comments = Comment::with("user")->where("commentable_id", $this->id)->get()->toTree();
         return $comments;
     }
 

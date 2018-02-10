@@ -17,6 +17,7 @@ import Comments from './components/Comments';
 import EditComment from './components/EditComment';
 import Users from './components/Users';
 import EditUser from './components/Edituser';
+import Orders from './components/Orders';
 import {Layout} from './components/BasicLayout';
 
 class App extends Component
@@ -77,6 +78,9 @@ class App extends Component
                     )}/>
                     <Route path="/admin/users/edit/:user_id" exact render={(props) => (
                         <EditUser {...props} token={this.state.token}/>
+                    )}/>
+                    <Route path="/admin/orders" exact render={(props) => (
+                        <Orders {...props} token={this.state.token}/>
                     )}/>
                 </Layout>
             </Router>

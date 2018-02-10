@@ -17,7 +17,7 @@ class CreatePositionsTable extends Migration
             $table->increments('id');
             $table->integer('product_id')->unsigned()->index();
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
-            $table->tinyInteger('count')->unsigned();
+            $table->tinyInteger('count')->unsigned()->default(1);
             $table->integer('order_id')->unsigned()->index();
             $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
             $table->timestamps();

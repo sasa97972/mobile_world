@@ -8,18 +8,8 @@ import {SortBar} from './SortBar';
 
 export const Products = (props) => {
     const {
-        products,
-        search,
-        productSearch,
-        currentPage,
-        pages,
-        changePage,
-        changeSort,
-        changeSortBy,
-        sortBy,
-        sort,
-        changePerPage,
-        perPage} = props;
+        products, search, productSearch, currentPage, pages, changePage, changeSort, changeSortBy, sortBy, sort,
+        changePerPage, perPage, addProduct} = props;
 
     return(
         <main className="col-md-9 products">
@@ -44,6 +34,7 @@ export const Products = (props) => {
                     <ProductCard
                         key={product.id}
                         product={product}
+                        addProduct={addProduct}
                     />
                 ))}
             </div>
@@ -57,7 +48,7 @@ export const Products = (props) => {
 };
 
 const ProductCard = (props) => {
-    const {product} = props;
+    const {product, addProduct} = props;
 
     const cardStyle = {
         height: "100%",
@@ -78,7 +69,11 @@ const ProductCard = (props) => {
                         href={`/shop/product/${product.id}`}
                         label="Подробнее"
                         primary={true} />
-                    <RaisedButton label="Купить" secondary={true} />
+                    <RaisedButton
+                        label="Купить"
+                        secondary={true}
+                        onClick={addProduct.bind(null, product.id)}
+                    />
                 </CardActions>
             </Card>
         </div>

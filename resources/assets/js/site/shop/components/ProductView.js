@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
 
 export const ProductView = (props) => {
-    const {product} = props;
+    const {product, addProduct} = props;
     return(
         <div>
             {product && <div>
@@ -12,12 +12,16 @@ export const ProductView = (props) => {
                 <p>Товар подходит для:</p>
                 <ul>
                     {product.phones.length ? product.phones.map((phone) => (
-                        <li>{phone.name} {phone.model};</li>
+                        <li key={phone.id}>{phone.name} {phone.model};</li>
                     )) :
                         <li>Для всех телефонов</li>
                     }
                 </ul>
-                <RaisedButton label="Купить" secondary={true} />
+                <RaisedButton
+                    label="Купить"
+                    secondary={true}
+                    onClick={addProduct.bind(null, product.id)}
+                />
             </div>}
         </div>
     );

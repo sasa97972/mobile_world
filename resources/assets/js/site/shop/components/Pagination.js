@@ -11,10 +11,11 @@ export const Pagination = (props) => {
                     label="<<"
                     onClick={() => changePage(currentPage - 1)}
                 />}
+                {pages > 1 &&
                 <RaisedButton
                     label={currentPage}
                     secondary={true}
-                />
+                />}
                 {currentPage + 1 <= pages &&
                 <RaisedButton
                     label=">>"

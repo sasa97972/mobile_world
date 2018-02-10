@@ -37,5 +37,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'api.token', 'namespace' => '
     Route::resource('images', 'ImagesController');
     Route::resource('comments', 'CommentsController');
     Route::resource('users', 'UsersController');
+    Route::resource('orders', 'OrdersController');
 });
 

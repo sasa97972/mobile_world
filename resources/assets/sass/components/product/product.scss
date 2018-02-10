@@ -1,5 +1,9 @@
 @import "../../variables";
 
+.product {
+  margin-bottom: 40px;
+}
+
 .product__slider-item {
   width: 100%;
   display: block;
@@ -38,6 +42,15 @@
   .slick-slide {
     transform: scale(.7);
     transition: transform .5s;
+  }
+}
+
+.slider-nav,
+.slider-for {
+  .slick-track {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
   }
 }
 
