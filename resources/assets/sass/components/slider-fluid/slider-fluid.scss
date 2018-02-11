@@ -60,13 +60,13 @@
   //background-attachment: fixed;
 
   &.slider-fluid__content_one {
-    background: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url(/images/slider-fluid/1.jpg) no-repeat center center / cover fixed;
+    background: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url(/images/slider-fluid/1.jpg) no-repeat center center / cover;
   }
   &.slider-fluid__content_two {
-    background: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url(/images/slider-fluid/2.jpg) no-repeat center center / cover fixed;
+    background: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url(/images/slider-fluid/2.jpg) no-repeat center center / cover;
   }
   &.slider-fluid__content_three {
-    background: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url(/images/slider-fluid/3.jpg) no-repeat center center / cover fixed;
+    background: linear-gradient(rgba(0,0,0,.5), rgba(0,0,0,.5)), url(/images/slider-fluid/3.jpg) no-repeat center center / cover;
   }
 }
 

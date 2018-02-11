@@ -286,7 +286,7 @@ const UserBlock = (props) => {
             <td>{role}</td>
             <td>{created_at}</td>
             <td className="dashboard__table-actions">
-                {role === "super_admin" ?
+                {role === "super_admin" || role === "admin" ?
                     "Невозможно"
                     :
                     <div className="btn-group" role="group">
