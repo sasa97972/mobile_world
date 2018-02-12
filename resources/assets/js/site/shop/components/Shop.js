@@ -25,8 +25,6 @@ class Shop extends Component
             search: "",
             isSearch: false,
             filter: [],
-            phones_selected: [],
-            phones: [],
             price: {}
         };
 
@@ -52,7 +50,6 @@ class Shop extends Component
     }
 
     componentWillReceiveProps(nextProps) {
-        //this.pagination(this.getProducts(nextProps.products.slice()));
         this.applyFilter(nextProps.products.slice());
     }
 
@@ -109,11 +106,13 @@ class Shop extends Component
 
     checkPhones(selectedOptions) {
         const filter = this.state.filter.slice();
+
         filter[1].phones.map((phone) => {
             phone.check = selectedOptions.search(phone.id) !== -1;
         });
+        filter[1].phonesSelected = selectedOptions;
         
-        this.setState({filter: filter, phones_selected: selectedOptions}, () => {
+        this.setState({filter: filter}, () => {
             this.applyFilter();
         });
     }
@@ -146,10 +145,10 @@ class Shop extends Component
             filterName: "categories",
             filterSearch: "name",
             categories: filterData.categories.map((category) => ({
-                            name: category.name,
-                            check: false,
-                            alias: category.alias
-                        }))
+                name: category.name,
+                check: false,
+                alias: category.alias
+            }))
         });
         filter.push({
             filterName: "phones",
@@ -159,11 +158,12 @@ class Shop extends Component
                 name: phone.name,
                 model: phone.model,
                 check: false,
-            }))
-        });
-        let phones = [];
-        filterData.phones.map((phone) => {
-            phones.push({value: phone.id, label: `${phone.name} ${phone.model}`})
+            })),
+            phonesSelect: filterData.phones.map((phone) => ({
+                    value: phone.id,
+                    label: `${phone.name} ${phone.model}`
+            })),
+            phonesSelected: ""
         });
 
         filter.push({
@@ -176,7 +176,7 @@ class Shop extends Component
             }
         });
 
-        this.setState({filter: filter, phones: phones, price: {max: filterData.price.max, min:filterData.price.min}}, () => {
+        this.setState({filter: filter, price: {max: filterData.price.max, min:filterData.price.min}}, () => {
             if(this.props.match.params.category) {
                 this.applyCategory(this.props.match.params.category);
             }
@@ -193,7 +193,7 @@ class Shop extends Component
     }
 
     applyFilter(products = this.getProducts()) {
-        const filter   = this.state.filter;
+        const filter = this.state.filter;
 
         let filteredProducts = [];
         let productForFilter = [];
@@ -209,10 +209,10 @@ class Shop extends Component
                     }
                 });
             } else {
-                filter[filter.filterName].map((item) => {
-                    if(!filter[filter.filterName].find(i => i.check)) {
-                        filteredProducts = productForFilter.slice();
-                    } else {
+                if(!filter[filter.filterName].find(i => i.check)) {
+                    filteredProducts = productForFilter.slice();
+                } else {
+                    filter[filter.filterName].map((item) => {
                         productForFilter.map((product, index, arr) => {
                             if(Array.isArray(product[filter.filterName])) {
                                 product[filter.filterName].map((phone) => {
@@ -224,8 +224,8 @@ class Shop extends Component
                                 filteredProducts.push(arr.splice(index, 1, {})[0]);
                             }
                         })
-                    }
-                })
+                    })
+                }
             }
         });
 
@@ -243,7 +243,7 @@ class Shop extends Component
 
     render() {
         const {products, search, pages, currentPage, sortBy, sort,
-            perPage, filter, phones, phones_selected, price} = this.state;
+            perPage, filter, price} = this.state;
         const {addProduct} = this.props;
         return(
             <MuiThemeProvider>
@@ -251,9 +251,7 @@ class Shop extends Component
                     <SideBar
                         checkCategories={this.checkCategories}
                         filter={filter}
-                        phones={phones}
                         checkPhones={this.checkPhones}
-                        phonesSelected={phones_selected}
                         price={price}
                         changePrice={this.changePrice}
                     />

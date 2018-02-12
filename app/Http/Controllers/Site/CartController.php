@@ -19,24 +19,13 @@ class CartController extends Controller
     public function index(Request $request)
     {
         if(!$request->session()->get('cart')) {
-
-            return response([]); //todo return response()->json([], Response::HTTP_NOT_FOUND;)
+            return response()->json([], Response::HTTP_ACCEPTED);
         }
-        $products = Product::find($request->session()->get('cart'));
+        $products = Product::findOrFail($request->session()->get('cart'));
         foreach ($products as $product) {
             $product->title_image = Storage::url($product->title_image);
         }
         return response($products);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -47,10 +36,9 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        //$request->session()->flush();
         if($request->session()->has('cart')) {
             $id = array_search($request->product_id, $request->session()->get('cart'));
-            if($id !== 0) {
+            if($id === false) {
                 $request->session()->push('cart', $request->product_id);
             }
         } else {
@@ -60,39 +48,6 @@ class CartController extends Controller
         return response($request->session()->get('cart'));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -103,11 +58,12 @@ class CartController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        $index = array_search($id, $request->session()->get('cart')); //IF not index ?
+        $index = array_search($id, $request->session()->get('cart'));
+        if($index === false) return response()->json(null, Response::HTTP_BAD_REQUEST);
         $cart = $request->session()->get('cart');
         unset($cart[$index]);
         $request->session()->put('cart', $cart);
 
-        return response()->json($index, 200);
+        return response()->json(null, Response::HTTP_OK);
     }
 }

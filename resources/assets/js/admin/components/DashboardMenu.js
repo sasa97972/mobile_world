@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router-dom';
-import {withRouter, browserHistory} from "react-router";
+import {withRouter} from "react-router";
 
 const links = [
     {
@@ -58,14 +58,9 @@ class DashboardMenu extends Component {
         })
     }
 
-
-
     static find(array, value) {
         for(let i = 1; i < array.length; i++) {
-            if(
-                value.search(array[i].link) !== -1 ||
-                (array[i].relative && value.search(array[i].relative) !== -1 )
-            )
+            if(value.search(array[i].link) !== -1 || (array[i].relative && value.search(array[i].relative) !== -1 ))
                 return array[i].id
         }
 

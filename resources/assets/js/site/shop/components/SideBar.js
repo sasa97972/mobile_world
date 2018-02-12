@@ -9,7 +9,7 @@ import InputRange from 'react-input-range';
 import 'react-input-range/lib/css/index.css';
 
 export const SideBar = (props) => {
-    const {filter, checkCategories, phones, checkPhones, phonesSelected, price, changePrice} = props;
+    const {filter, checkCategories, checkPhones, price, changePrice} = props;
     return(
         <aside className="col-md-3">
             <List>
@@ -37,10 +37,10 @@ export const SideBar = (props) => {
                         <div className="col-md-12 filter__item">
                             <Select
                                 name="phones"
-                                value={phonesSelected}
+                                value={filter[1].phonesSelected}
                                 multi={true}
                                 onChange={checkPhones}
-                                options={phones}
+                                options={filter[1].phonesSelect}
                                 simpleValue={true}
                             />
                         </div>
