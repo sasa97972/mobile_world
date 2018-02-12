@@ -107,6 +107,6 @@
     </div>
 </section>
 
-<div id="shop-root"></div>
+<div id="shop-root" style="position: absolute"></div>
 
 @endsection
