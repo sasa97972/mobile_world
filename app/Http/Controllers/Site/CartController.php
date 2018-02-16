@@ -21,11 +21,12 @@ class CartController extends Controller
         if(!$request->session()->get('cart')) {
             return response()->json([], Response::HTTP_ACCEPTED);
         }
-        $products = Product::findOrFail($request->session()->get('cart'));
+        $products = Product::findOrFail($request->session()->get('cart'))->sum('price');
+        //$sum = Product::findOrFail($request->session()->get('cart'));
         foreach ($products as $product) {
             $product->title_image = Storage::url($product->title_image);
         }
-        return response($products);
+        return response()->json($products, Response::HTTP_OK);
     }
 
     /**

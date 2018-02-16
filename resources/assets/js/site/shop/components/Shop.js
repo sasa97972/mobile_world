@@ -43,14 +43,12 @@ class Shop extends Component
         this.applyCategory = this.applyCategory.bind(this);
     }
 
-    componentDidMount() {
+    componentWillMount() {
         const {getProducts} = this.props;
-        getProducts({url: this.state.url});
+        getProducts({url: this.state.url}).then(() => {
+            this.applyFilter(this.props.products.slice());
+        });
         this.getFilterData();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.applyFilter(nextProps.products.slice());
     }
 
     pagination(products) {
@@ -282,7 +280,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     getProducts: (params) => {
-        dispatch(getProducts(params));
+        return dispatch(getProducts(params));
     },
     changeSort: (params) => {
         dispatch(changeSort(params));

@@ -6,7 +6,8 @@ export const getProducts = (params) => dispatch => {
         url: params.url,
     };
 
-    axios(settings).then(response => {
-        dispatch({type: "FETCH_PRODUCTS_SUCCESS", payload: response.data})
+    return axios(settings).then(response => {
+        dispatch({type: "FETCH_PRODUCTS_SUCCESS", payload: response.data});
+        return Promise.resolve();
     });
 };
